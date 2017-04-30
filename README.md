@@ -1,2 +1,2 @@
-# srepollock.github.io
+# Scrolling Site
 Created by Spencer Pollock
