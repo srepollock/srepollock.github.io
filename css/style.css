@@ -18,7 +18,6 @@ a {
     font-weight: bold;
 }
 
-
 ol,ul {
     list-style: none;
     margin:0;
@@ -98,6 +97,20 @@ ol,ul {
 
 .section div.bg-black > p {
     padding-bottom: 2%;
+}
+
+.section div.contact ul#social {
+    list-style-type: none;
+    padding-bottom: 2%;
+}
+
+.section div.contact ul#social li {
+    display: inline;
+    padding: 0 2% 5% 2%;
+}
+
+.section div.contact ul#social a:hover {
+    color: #fff;
 }
 
 /*Individual slides backgrounds*/
