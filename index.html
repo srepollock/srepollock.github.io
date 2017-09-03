@@ -6,73 +6,185 @@
 
   <title>Spencer Pollock</title>
   <meta name="description" content="Scrolling site with fullpage.js">
-  <meta name="author" content="SpencerPollock">
+  <meta name="author" content="Spencer Pollock">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" type="image/png" href="images/favicon.ico"/>
-  <!--Stylesheets-->
-  <link rel="stylesheet" type="text/css" href="css/jquery.fullPage.css" />
-  <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+  <link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-blue.min.css" />
+  <script src="/node_modules/material-design-lite/material.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="css/style.css">
-  <!--Scripts-->
-  <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>--> <!--CDN-->
-  <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="js/jquery.fullPage.min.js"></script>
   <script src="js/script.js"></script>
 </head>
 
 <body>
-  <ul id="menu">
-    <li data-menuanchor="home" class="active"><a href="#home">Home</a></li>
-    <li data-menuanchor="about"><a href="#about">About</a></li>
-    <li data-menuanchor="work"><a href="#work">Work</a></li>
-    <li data-menuanchor="contact"><a href="#contact">Contact</a></li>
-  </ul>
-  <div id="footer">Credit: <a href="http://alvarotrigo.com/fullPage/" target="_blank">FullPage</a> | Pictures: <a href="https://www.pexels.com/" target="_blank">Pexels</a> | Icons: <a href="flatico-license.html">Flaticon</a></div>
-
-  <div id="fullpage">
-    <div class="section image0">
-      <div class="intro">
-        <h1>Spencer Pollock</h1>
-        <p>Programmer, Developer, Project Enthusiast</p>
-      </div>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-layout__header--waterfall portfolio-header">
+            <div class="mdl-layout__header-row portfolio-logo-row">
+                <span class="mdl-layout__title">
+                    <div class="portfolio-logo"></div>
+                    <span class="mdl-layout__title">Simple portfolio website</span>
+                </span>
+            </div>
+            <div class="mdl-layout__header-row portfolio-navigation-row mdl-layout--large-screen-only">
+                <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+                    <a class="mdl-navigation__link is-active" href="index.html">Portfolio</a>
+                    <a class="mdl-navigation__link" href="blog.html">Blog</a>
+                    <a class="mdl-navigation__link" href="about.html">About</a>
+                    <a class="mdl-navigation__link" href="contact.html">Contact</a>
+                </nav>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer mdl-layout--small-screen-only">
+            <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+                <a class="mdl-navigation__link is-active" href="index.html">Portfolio</a>
+                <a class="mdl-navigation__link" href="blog.html">Blog</a>
+                <a class="mdl-navigation__link" href="about.html">About</a>
+                <a class="mdl-navigation__link" href="contact.html">Contact</a>
+            </nav>
+        </div>
+        <main class="mdl-layout__content">
+            <div class="mdl-grid portfolio-max-width">
+                <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                    <div class="mdl-card__media">
+                        <img class="article-image" src=" images/example-work01.jpg" border="0" alt="">
+                    </div>
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Blog template</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt. Sunt nulla eu enim irure enim nostrud aliqua consectetur ad consectetur sunt ullamco officia. Ex officia laborum et consequat duis.
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent" href="portfolio-example01.html">Read more</a>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                    <div class="mdl-card__media">
+                        <img class="article-image" src=" images/example-work07.jpg" border="0" alt="">
+                    </div>
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Sunt nulla</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt. Sunt nulla eu enim irure enim nostrud aliqua consectetur ad consectetur sunt ullamco officia. Ex officia laborum et consequat duis.
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent" href="portfolio-example01.html">Read more</a>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                    <div class="mdl-card__media">
+                        <img class="article-image" src=" images/example-work02.jpg" border="0" alt="">
+                    </div>
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Android.com website</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt. Sunt nulla eu enim irure enim nostrud aliqua consectetur ad consectetur sunt ullamco officia. Ex officia laborum et consequat duis.
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent" href="portfolio-example01.html">Read more</a>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                    <div class="mdl-card__media">
+                        <img class="article-image" src=" images/example-work03.jpg" border="0" alt="">
+                    </div>
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Dashboard template</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt. Sunt nulla eu enim irure enim nostrud aliqua consectetur ad consectetur sunt ullamco officia. Ex officia laborum et consequat duis.
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent" href="portfolio-example01.html">Read more</a>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                    <div class="mdl-card__media">
+                        <img class="article-image" src=" images/example-work04.jpg" border="0" alt="">
+                    </div>
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Text-heavy website</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt. Sunt nulla eu enim irure enim nostrud aliqua consectetur ad consectetur sunt ullamco officia. Ex officia laborum et consequat duis.
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent" href="portfolio-example01.html">Read more</a>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                    <div class="mdl-card__media">
+                        <img class="article-image" src=" images/example-work08.jpg" border="0" alt="">
+                    </div>
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Ex officia laborum</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt. Sunt nulla eu enim irure enim nostrud aliqua consectetur ad consectetur sunt ullamco officia. Ex officia laborum et consequat duis.
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent" href="portfolio-example01.html">Read more</a>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                    <div class="mdl-card__media">
+                        <img class="article-image" src=" images/example-work05.jpg" border="0" alt="">
+                    </div>
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Stand-alone article</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt. Sunt nulla eu enim irure enim nostrud aliqua consectetur ad consectetur sunt ullamco officia. Ex officia laborum et consequat duis.
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent" href="portfolio-example01.html">Read more</a>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                    <div class="mdl-card__media">
+                        <img class="article-image" src=" images/example-work06.jpg" border="0" alt="">
+                    </div>
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">MDL website</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt. Sunt nulla eu enim irure enim nostrud aliqua consectetur ad consectetur sunt ullamco officia. Ex officia laborum et consequat duis.
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent" href="portfolio-example01.html">Read more</a>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
+                    <div class="mdl-card__media">
+                        <img class="article-image" src=" images/example-work09.jpg" border="0" alt="">
+                    </div>
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Consequat ut quis</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Enim labore aliqua consequat ut quis ad occaecat aliquip incididunt. Sunt nulla eu enim irure enim nostrud aliqua consectetur ad consectetur sunt ullamco officia. Ex officia laborum et consequat duis.
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect mdl-button--accent" href="portfolio-example01.html">Read more</a>
+                    </div>
+                </div>
+            </div>
+            <footer class="mdl-mini-footer">
+                <div class="mdl-mini-footer__left-section">
+                    <div class="mdl-logo">Simple portfolio website</div>
+                </div>
+                <div class="mdl-mini-footer__right-section">
+                    <ul class="mdl-mini-footer__link-list">
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Privacy & Terms</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </main>
     </div>
-    <div class="section image1">
-      <div class="about bg-black">
-        <h2>About</h2>
-        <!--Information about me / blog kinda deal-->
-        <p>My name is Spencer Pollock. I am a full stack developer, specializing in low level programming (C, C++, C#). I enjoy hobbies such as: reading book; travelling; IoT project development (starting to get more interested in building some things); Magic the Gathering; spending time with friends; playing video games; and learning new languages. Any time I have a chance to try and develop in a new language, I'll always take it. There I always room to learn, and sometimes another language may be the stronger choice for the project.</p>
-      </div>
-    </div>
-    <div class="section image2">
-      <div class="work bg-black">
-        <h2>Project Work</h2>
-        <!--Work Links to GitHub-->
-        <ul>
-          <li><a href="https://github.com/srepollock/Asteroids">3D Asteroids</a></li>
-          <li><a href="https://github.com/srepollock/FacialRecognition">Face recognition</a></li>
-          <li><a href="https://github.com/srepollock/SoundWaveAnalyzer">Soundwave analyzer</a></li>
-          <li><a href="https://github.com/srepollock/MPEGCompression">MPEG Compression</a></li>
-        </ul>
-        <!--Work Information (just things to talk about)-->
-        <p>Most of my projects were completed through school. I hope to expand this much more in the future with little projects as time goes on, but for now I'm going to try and work on these projects to fix them up and make them more presentable.</p>
-        <p class="important-note">Right now I have some side/personal projects in the works that I cannot share at the moment. Stay up to date here or <a href="https://github.com/srepollock">follow me on GitHub</a> for my activity.</p>
-      </div>
-    </div>
-    <div class="section image3">
-      <div class="contact bg-black">
-        <h2>Contact</h2>
-        <!--Main contact is email / website-->
-        <p>Feel free to contact me at any time. I'm always near my phone and available when I can be (life is busy right?). Email is the best form of contact, but tweeting me @srepollock is quick too. Ontop of this, if you need a copy of my resume, please email me with the company and title in the subject, and I will get back to you ASAP. Otherwise, check out my GitHub for most of my projects, the rest can be found on my <a href="https://github.com/srepollockarchive">archive account.</a> Twitter is where I like to spend some time, and I don't normally tweet a lot on this account. Feel free to find me on my other account if you're up for a challenge. Linkedin shows all my previous and current work titles and experience (so I guess my resume but I do keep both linkedin and a pdf version up to date).</p>
-        <ul id="social">
-          <li><a href='https://github.com/srepollock'><i class="fa fa-github fa-3x" aria-hidden="true"></i></a></li>
-          <li><a href='https://twitter.com/srepollock'><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a></li>
-          <li><a href='https://linkedin.com/in/srepollock'><i class="fa fa-linkedin fa-3x" aria-hidden="true"></i></a></li>
-          <li><a href=''><i class="fa fa-envelope-o fa-3x" aria-hidden="true"></i></a></li>
-          <li><a href='http://spollock.xyz'><i class="fa fa-star-o fa-3x" aria-hidden="true"></i></a></li>
-        </ul>
-        <ul>
-        </ul>
-      </div>
-    </div>
-  </div>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </body>
 </html>
