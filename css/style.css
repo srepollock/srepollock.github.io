@@ -131,7 +131,7 @@ body .demo-blog {
   order: -1;
 }
 .demo-blog .coffee-pic .mdl-card__media {
-  background-image: url('../images/coffee.jpg');
+  background-image: url('../images/canyon.jpg');
 }
 .demo-blog .something-else .mdl-card__media {
   display: flex;
@@ -162,10 +162,10 @@ body .demo-blog {
   border-bottom-right-radius: 2px;
 }
 .demo-blog .on-the-road-again .mdl-card__media {
-  background-image: url('../images/road.jpg');
+  background-image: url('../images/afterhours.jpg');
 }
 .demo-blog .shopping .mdl-card__media {
-  background-image: url('../images/shopping.jpg');
+  background-image: url('../images/hideaway.jpg');
 }
 .demo-blog .demo-blog__posts > .demo-nav {
   margin: 12px 15px;
