@@ -13,4 +13,4 @@ jobs:
       - run: npm install
       - uses: enriikke/gatsby-gh-pages-action@v2
         with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
+          access-token: ${{ secrets.gh_token }}
