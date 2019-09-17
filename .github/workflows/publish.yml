@@ -3,13 +3,14 @@ name: Gatsby Publish
 on:
   push:
     branches:
-      - dev
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - run: npm install
       - uses: enriikke/gatsby-gh-pages-action@v2
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
