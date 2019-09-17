@@ -22,10 +22,21 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write '**/*.js'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ignore-path .gitignore . --ext ts --ext tsx --ext js --ext jsx",
+    "lint:fix": "yarn lint --fix"
   },
   "devDependencies": {
-    "prettier": "^1.18.2"
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "gatsby-plugin-typescript": "^2.1.8",
+    "git-cz": "^3.2.1",
+    "prettier": "^1.18.2",
+    "typescript": "^3.6.3"
   },
   "repository": {
     "type": "git",

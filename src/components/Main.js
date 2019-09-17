@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import pic01 from '../images/pic01.jpg'
-import pic02 from '../images/pic02.jpg'
-import pic03 from '../images/pic03.jpg'
+import srepollock from '../images/srepollock.jpg'
 
 class Main extends React.Component {
   render() {
-    let close = (
+    const close = (
       <div
         className="close"
         onClick={() => {
@@ -22,35 +20,66 @@ class Main extends React.Component {
         style={this.props.timeout ? { display: 'flex' } : { display: 'none' }}
       >
         <article
-          id="intro"
-          className={`${this.props.article === 'intro' ? 'active' : ''} ${
+          id="projects"
+          className={`${this.props.article === 'projects' ? 'active' : ''} ${
             this.props.articleTimeout ? 'timeout' : ''
           }`}
           style={{ display: 'none' }}
         >
-          <h2 className="major">Intro</h2>
-          <span className="image main">
-            <img src={pic01} alt="" />
-          </span>
+          <h2 className="major">Projects</h2>
+          <ul>
+            <li>
+              <a href="https://github.com/srepollock/divine-engine">
+                Divine Engine: A TypeScript Game Engine
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/srepollock/password-generator">
+                iOS Password Generator
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/srepollock/ts-lib-tutorial">
+                TypeScript Library Tutorial
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/srepollock/circular-queue">
+                Circular Queue in C++
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/srepollock/external-ip">
+                External IP via Python script
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/srepollock/Asteroids">3D Asteroids</a>
+            </li>
+            <li>
+              <a href="https://github.com/srepollock/facial-recognition">
+                Face recognition
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/srepollock/sound-wave-analyzer">
+                Soundwave analyzer
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/srepollock/MPEGCompression">
+                MPEG Compression
+              </a>
+            </li>
+          </ul>
           <p>
-            Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin
-            aliquam facilisis ante interdum congue. Integer mollis, nisl amet
-            convallis, porttitor magna ullamcorper, amet egestas mauris. Ut
-            magna finibus nisi nec lacinia. Nam maximus erat id euismod egestas.
-            By the way, check out my <a href="#work">awesome work</a>.
+            I look forward to trying new ideas and implementations. I try and
+            stay up to date on new technologies, frameworks, libraries and more
+            through projects and testing.
           </p>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-            dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora
-            torquent per conubia nostra, per inceptos himenaeos. Etiam tristique
-            libero eu nibh porttitor fermentum. Nullam venenatis erat id
-            vehicula viverra. Nunc ultrices eros ut ultricies condimentum.
-            Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae
-            dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in
-            lectus. Pellentesque habitant morbi tristique senectus et netus et
-            malesuada fames ac turpis egestas. In non lorem sit amet elit
-            placerat maximus. Pellentesque aliquam maximus risus, vel sed
-            vehicula.
+            Click here if you&apos;d like to follow me on
+            <a href="https://github.com/srepollock">GitHub</a>
           </p>
           {close}
         </article>
@@ -63,24 +92,30 @@ class Main extends React.Component {
           style={{ display: 'none' }}
         >
           <h2 className="major">Work</h2>
-          <span className="image main">
-            <img src={pic02} alt="" />
-          </span>
-          <p>
-            Adipiscing magna sed dolor elit. Praesent eleifend dignissim arcu,
-            at eleifend sapien imperdiet ac. Aliquam erat volutpat. Praesent
-            urna nisi, fringila lorem et vehicula lacinia quam. Integer
-            sollicitudin mauris nec lorem luctus ultrices.
-          </p>
-          <p>
-            Nullam et orci eu lorem consequat tincidunt vivamus et sagittis
-            libero. Mauris aliquet magna magna sed nunc rhoncus pharetra.
-            Pellentesque condimentum sem. In efficitur ligula tate urna.
-            Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor.
-            Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis
-            libero. Mauris aliquet magna magna sed nunc rhoncus amet feugiat
-            tempus.
-          </p>
+          <ul>
+            <li>
+              <p>
+                Senior Production Services Technician, Sony Pictures Imageworks
+                <br />
+                September 2018 - July 2019
+              </p>
+            </li>
+            <li>
+              <p>
+                Chair of the School of Computing and Academic Studies, BCIT
+                Student Association
+                <br />
+                June 2017 - May 2018
+              </p>
+            </li>
+            <li>
+              <p>
+                Systems Engineer, Sony Pictures Imageworks
+                <br />
+                May 2017-August 2017, June 2016 - August 2016
+              </p>
+            </li>
+          </ul>
           {close}
         </article>
 
@@ -92,17 +127,32 @@ class Main extends React.Component {
           style={{ display: 'none' }}
         >
           <h2 className="major">About</h2>
-          <span className="image main">
-            <img src={pic03} alt="" />
+          <span className="image left">
+            <img src={srepollock} alt="" height="20%" />
           </span>
           <p>
-            Lorem ipsum dolor sit amet, consectetur et adipiscing elit. Praesent
-            eleifend dignissim arcu, at eleifend sapien imperdiet ac. Aliquam
-            erat volutpat. Praesent urna nisi, fringila lorem et vehicula
-            lacinia quam. Integer sollicitudin mauris nec lorem luctus ultrices.
-            Aliquam libero et malesuada fames ac ante ipsum primis in faucibus.
-            Cras viverra ligula sit amet ex mollis mattis lorem ipsum dolor sit
-            amet.
+            My name is Spencer Pollock. I am an outgoing, energetic software
+            developer that is looking to help bring a fresh take on projects. I
+            work towards helping the development community remain inclusive and
+            full of pride in all projects and teams. Lately, I have been working
+            on creating a game engine in TypeScript with NPM and Electron, but I
+            specialize in C++ and low-level development. I enjoy hiking, playing
+            video games and hanging out with good company. I always look forward
+            to a new adventure or challenge.
+          </p>
+          <h3>Languages</h3>
+          <p>C, C++, C#, Python, JavaScript, TypeScript, HTML, Shell</p>
+          <h3>Skills</h3>
+          <p>
+            Project Management, CI/CD integration, Test Driven Development,
+            Behaviour Driven Development, Automated systems, System
+            Administration, Agile development, UI/UX design, Photoshop, Game
+            Development, ElectronJS, NodeJS, REST API, ReactJS (experience)
+          </p>
+          <h3>Hobbies</h3>
+          <p>
+            Reading, philosophy, projects on new platforms, game development,
+            video games, Lacrosse referee, snowboarding, and hiking.
           </p>
           {close}
         </article>
@@ -115,7 +165,7 @@ class Main extends React.Component {
           style={{ display: 'none' }}
         >
           <h2 className="major">Contact</h2>
-          <form method="post" action="#">
+          <form method="post" action="mailto:spencer@spollock.ca">
             <div className="field half first">
               <label htmlFor="name">Name</label>
               <input type="text" name="name" id="name" />
@@ -140,25 +190,31 @@ class Main extends React.Component {
           <ul className="icons">
             <li>
               <a
-                href="https://twitter.com/HuntaroSan"
+                href="https://twitter.com/srepollock"
                 className="icon fa-twitter"
               >
                 <span className="label">Twitter</span>
               </a>
             </li>
             <li>
-              <a href="https://codebushi.com" className="icon fa-facebook">
-                <span className="label">Facebook</span>
+              <a
+                href="https://linkedin.com/in/srepollock/"
+                className="icon fa-linkedin"
+              >
+                <span className="label">LinkedIn</span>
               </a>
             </li>
             <li>
-              <a href="https://codebushi.com" className="icon fa-instagram">
+              <a
+                href="https://www.instagram.com/srepollock/"
+                className="icon fa-instagram"
+              >
                 <span className="label">Instagram</span>
               </a>
             </li>
             <li>
               <a
-                href="https://github.com/codebushi/gatsby-starter-dimension"
+                href="https://github.com/srepollock/"
                 className="icon fa-github"
               >
                 <span className="label">GitHub</span>

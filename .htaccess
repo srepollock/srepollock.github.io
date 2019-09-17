@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} spollock\.ca [NC]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://spollock.ca/$1 [R,L]
