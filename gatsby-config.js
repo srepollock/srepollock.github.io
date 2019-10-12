@@ -22,13 +22,13 @@ module.exports = {
     'gatsby-plugin-sass',
     'gatsby-plugin-offline',
     {
-      resolve: `gatsby-plugin-gtag`,
+      resolve: `gatsby-plugin-google-analytics`,
       options: {
         // your google analytics tracking id
         trackingId: 'UA-21240152-6',
-        // Puts tracking script in the head instead of the body
+        // Defines where to place the tracking script - `true` in the head and `false` in the body
         head: false,
-        // enable ip anonymization
+        // Setting this parameter is optional
         anonymize: true,
       },
     },
