@@ -136,23 +136,25 @@ class Main extends React.Component {
             work towards helping the development community remain inclusive and
             full of pride in all projects and teams. Lately, I have been working
             on creating a game engine in TypeScript with NPM and Electron, but I
-            specialize in C++ and low-level development. I enjoy hiking, playing
-            video games and hanging out with good company. I always look forward
-            to a new adventure or challenge.
+            specialize in low-level development and tooling. I enjoy hiking,
+            playing video games and hanging out with good company. I always look
+            forward to a new adventure or challenge.
           </p>
           <h3>Languages</h3>
           <p>C, C++, C#, Python, JavaScript, TypeScript, HTML, Shell</p>
           <h3>Skills</h3>
           <p>
-            Project Management, CI/CD integration, Test Driven Development,
-            Behaviour Driven Development, Automated systems, System
-            Administration, Agile development, UI/UX design, Photoshop, Game
-            Development, ElectronJS, NodeJS, REST API, ReactJS (experience)
+            Project Management, Continuous Integration/Continuous Development
+            integration, Test Driven Development, Behaviour Driven Development,
+            Automated Systems, System Administration, Agile development, UI/UX
+            design, Photoshop, Game Development, ElectronJS, NodeJS, REST API,
+            ReactJS
           </p>
           <h3>Hobbies</h3>
           <p>
-            Reading, philosophy, projects on new platforms, game development,
-            video games, Lacrosse referee, snowboarding, and hiking.
+            Reading, philosophy, projects on new platforms, projects in new
+            languages, game development, video games, Lacrosse referee,
+            snowboarding, and hiking.
           </p>
           {close}
         </article>
