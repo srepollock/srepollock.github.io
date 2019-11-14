@@ -38,6 +38,7 @@
     "gatsby-plugin-typescript": "^2.1.8",
     "git-cz": "^3.2.1",
     "prettier": "^1.18.2",
+    "react-iframe": "^1.8.0",
     "typescript": "^3.6.3"
   },
   "repository": {

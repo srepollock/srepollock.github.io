@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import Iframe from 'react-iframe'
 import srepollock from '../images/srepollock.jpg'
 
 class Main extends React.Component {
@@ -80,6 +81,14 @@ class Main extends React.Component {
           <p>
             Click here if you&apos;d like to follow me on
             <a href="https://github.com/srepollock">GitHub</a>
+          </p>
+          <p>
+            <h4>Games</h4>
+            <Iframe
+              url="https://itch.io/embed/516922?linkback=true&amp;dark=true"
+              width="552"
+              height="167"
+            />
           </p>
           {close}
         </article>
