@@ -81,6 +81,15 @@ class Main extends React.Component {
             Click here if you&apos;d like to follow me on
             <a href="https://github.com/srepollock">GitHub</a>
           </p>
+          <p>
+            <h4>Games</h4>
+            <iframe
+              frameBorder="0"
+              src="https://itch.io/embed/516922?linkback=true&amp;dark=true"
+              width="552"
+              height="167"
+            ></iframe>
+          </p>
           {close}
         </article>
 
