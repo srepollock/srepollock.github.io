@@ -15,6 +15,13 @@ module.exports = {
         head: true,
       },
     },
+    {
+      resolve: `gatsby-plugin-google-adsense`,
+      options: {
+        googleAdClientId: 'ca-pub-8650073157913510',
+        head: true, // Optional
+      },
+    },
     'gatsby-plugin-react-helmet',
     {
       resolve: `gatsby-plugin-manifest`,
