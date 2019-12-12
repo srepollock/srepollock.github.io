@@ -84,11 +84,12 @@ class Main extends React.Component {
           </p>
           <p>
             <h4>Games</h4>
-            <Iframe
-              url="https://itch.io/embed/516922?linkback=true&amp;dark=true"
+            <iframe
+              frameBorder="0"
+              src="https://itch.io/embed/516922?linkback=true&amp;dark=true"
               width="552"
               height="167"
-            />
+            ></iframe>
           </p>
           {close}
         </article>
