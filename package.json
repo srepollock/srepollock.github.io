@@ -14,7 +14,8 @@
     "node-sass": "^4.12.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-helmet": "^5.2.1"
+    "react-helmet": "^5.2.1",
+    "serve": "^11.2.0"
   },
   "keywords": [
     "gatsby"
@@ -27,7 +28,8 @@
     "format": "prettier --write '**/*.js'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ignore-path .gitignore . --ext ts --ext tsx --ext js --ext jsx",
-    "lint:fix": "yarn lint --fix"
+    "lint:fix": "yarn lint --fix",
+    "serve": "serve -s public"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.3.0",

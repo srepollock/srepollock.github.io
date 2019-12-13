@@ -130,6 +130,22 @@ class Main extends React.Component {
         </article>
 
         <article
+          id="blog"
+          className={`${this.props.article === 'blog' ? 'active' : ''} ${
+            this.props.articleTimeout ? 'timeout' : ''
+          }`}
+          style={{ display: 'none' }}
+        >
+          <h2 className="major">Blog</h2>
+          <p>
+            <a href="/blog">
+              <h2>Blog</h2>
+            </a>
+          </p>
+          {close}
+        </article>
+
+        <article
           id="about"
           className={`${this.props.article === 'about' ? 'active' : ''} ${
             this.props.articleTimeout ? 'timeout' : ''
