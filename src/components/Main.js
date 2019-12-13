@@ -139,7 +139,9 @@ class Main extends React.Component {
           <h2 className="major">Blog</h2>
           <p>
             <a href="/blog">
-              <h2>Blog</h2>
+              <center>
+                <h3>Blog</h3>
+              </center>
             </a>
           </p>
           {close}
