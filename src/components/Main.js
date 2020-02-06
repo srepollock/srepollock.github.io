@@ -30,7 +30,7 @@ class Main extends React.Component {
           <h2 className="major">Projects</h2>
           <ul>
             <li>
-              <a href="https://example.spollock.xyz">
+              <a href="http://example.spollock.xyz">
                 Wordpress in Docker on an AWS EC2 instance
               </a>
             </li>
