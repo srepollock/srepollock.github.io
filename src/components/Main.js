@@ -30,6 +30,11 @@ class Main extends React.Component {
           <h2 className="major">Projects</h2>
           <ul>
             <li>
+              <a href="https://example.spollock.xyz">
+                Wordpress in Docker on an AWS EC2 instance
+              </a>
+            </li>
+            <li>
               <a href="https://github.com/srepollock/divine-engine">
                 Divine Engine: A TypeScript Game Engine
               </a>
