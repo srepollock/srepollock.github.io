@@ -142,7 +142,7 @@ class Main extends React.Component {
           }`}
           style={{ display: 'none' }}
         >
-          <a href="https://srepollock.medium.com/><h2 className="major">Blog</h2></a>
+          <a href="https://srepollock.medium.com"><h2 className="major">Blog</h2></a>
           {close}
         </article>
 
