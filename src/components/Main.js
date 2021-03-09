@@ -134,18 +134,17 @@ class Main extends React.Component {
           {close}
         </article>
 
-        <a href="https://srepollock.medium.com/>
-          <article
-            id="blog"
-            className={`${this.props.article === 'blog' ? 'active' : ''} ${
-              this.props.articleTimeout ? 'timeout' : ''
-            }`}
-            style={{ display: 'none' }}
-          >
-            <h2 className="major">Blog</h2>
-            {close}
-          </article>
-        </a>
+
+        <article
+          id="blog"
+          className={`${this.props.article === 'blog' ? 'active' : ''} ${
+            this.props.articleTimeout ? 'timeout' : ''
+          }`}
+          style={{ display: 'none' }}
+        >
+          <a href="https://srepollock.medium.com/><h2 className="major">Blog</h2></a>
+          {close}
+        </article>
 
         <article
           id="about"
