@@ -38,12 +38,7 @@ const Header = props => (
           </a>
         </li>
         <li>
-          <a
-            href="javascript:;"
-            onClick={() => {
-              props.onOpenArticle('blog')
-            }}
-          >
+          <a href="https://srepollock.medium.com">
             Blog
           </a>
         </li>
