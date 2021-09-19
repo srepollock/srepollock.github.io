@@ -110,6 +110,20 @@ class Main extends React.Component {
           <ul>
             <li>
               <p>
+                Director of Gaming, QClub Canada
+                <br />
+                September 2021 - Present
+              </p>
+            </li>
+            <li>
+              <p>
+                Junior Engineer, Night Garden Studio
+                <br />
+                June 2020 - September 2021
+              </p>
+            </li>
+            <li>
+              <p>
                 Senior Production Services Technician, Sony Pictures Imageworks
                 <br />
                 September 2018 - July 2019
