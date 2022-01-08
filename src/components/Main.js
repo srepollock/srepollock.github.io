@@ -177,7 +177,7 @@ class Main extends React.Component {
         >
           <h2 className="major">About</h2>
           <span className="image left">
-            <StaticImage src={srepollock} alt="" height="20%" />
+            <img src={srepollock} alt="" height="20%" />
           </span>
           <p>
             💻 Software Engineer | Game Developer | DevOps | Project Enthusiest | Technical Writer
