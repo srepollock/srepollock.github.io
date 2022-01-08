@@ -1,6 +1,12 @@
-import PropTypes from 'prop-types'
 import React from 'react'
-import Iframe from 'react-iframe'
+import PropTypes from 'prop-types'
+import { Link } from "gatsby"
+import { StaticImage } from "gatsby-plugin-image"
+import { RiFacebookBoxFill } from "@react-icons/all-files/ri/RiFacebookBoxFill"
+import { RiTwitterFill, } from "@react-icons/all-files/ri/RiTwitterFill"
+import { RiInstagramFill } from "@react-icons/all-files/ri/RiInstagramFill"
+import { RiGithubFill } from "@react-icons/all-files/ri/RiGithubFill"
+import { RiYoutubeFill, } from "@react-icons/all-files/ri/RiYoutubeFill"
 import srepollock from '../images/srepollock.jpg'
 
 class Main extends React.Component {
@@ -171,7 +177,7 @@ class Main extends React.Component {
         >
           <h2 className="major">About</h2>
           <span className="image left">
-            <img src={srepollock} alt="" height="20%" />
+            <StaticImage src={srepollock} alt="" height="20%" />
           </span>
           <p>
             💻 Software Engineer | Game Developer | DevOps | Project Enthusiest | Technical Writer

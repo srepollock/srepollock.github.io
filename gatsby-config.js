@@ -3,9 +3,12 @@ module.exports = {
   siteMetadata: {
     title: 'Spencer Pollock',
     author: 'Spencer Pollock',
+    siteUrl: "https://spollock.ca",
+    siteImage: "/src/images/bg.png",
     description: "Spencer Pollock's Personal Webpage",
   },
   plugins: [
+    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
@@ -16,10 +19,60 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-plugin-google-adsense`,
+      resolve: `gatsby-plugin-gdpr-cookies`,
       options: {
-        googleAdClientId: 'ca-pub-8650073157913510',
-        head: true, // Optional
+        googleAnalytics: {
+          trackingId: 'UA-149862036-1', // leave empty if you want to disable the tracker
+          cookieName: 'gatsby-gdpr-google-analytics', // default
+          anonymize: true, // default
+          allowAdFeatures: false // default
+        },
+        googleTagManager: {
+          trackingId: 'GTM-KPT8RR5', // leave empty if you want to disable the tracker
+          cookieName: 'gatsby-gdpr-google-tagmanager', // default
+          dataLayerName: 'dataLayer', // default
+        },
+        facebookPixel: {
+          pixelId: 'YOUR_FACEBOOK_PIXEL_ID', // leave empty if you want to disable the tracker
+          cookieName: 'gatsby-gdpr-facebook-pixel', // default
+        },
+        tikTokPixel: {
+          pixelId: 'YOUR_TIKTOK_PIXEL_ID', // leave empty if you want to disable the tracker
+          cookieName: 'gatsby-gdpr-tiktok-pixel', // default
+        },
+        hotjar: {
+          hjid: '0000000',
+          hjsv: '6',
+          cookieName: 'gatsby-gdpr-hotjar', // default
+        },
+        // defines the environments where the tracking should be available  - default is ["production"]
+        environments: ['production', 'development']
+      },
+    },
+    {
+      resolve: `gatsby-plugin-sharp`,
+      options: {
+        defaults: {
+          formats: [`auto`, `webp`],
+          placeholder: `dominantColor`,
+          quality: 80,
+          breakpoints: [750, 1080, 1366, 1920],
+          backgroundColor: `transparent`,
+        },
+      },
+    },
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-image`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: 'dimension-v4',
+        short_name: 'Gatsby Starter',
+        start_url: '/',
+        background_color: '#663399',
+        theme_color: '#663399',
+        display: 'minimal-ui',
+        icon: 'static/assets/gatsby-icon.png', // This path is relative to the root of the site.
       },
     },
     'gatsby-plugin-react-helmet',
@@ -37,5 +90,6 @@ module.exports = {
     },
     'gatsby-plugin-sass',
     'gatsby-plugin-offline',
+    `gatsby-plugin-sitemap`
   ],
 }

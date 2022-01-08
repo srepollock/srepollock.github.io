@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
-import { StaticQuery, graphql } from 'gatsby'
+import { StaticQuery, graphql, Link } from 'gatsby'
+import CookieConsent from "react-cookie-consent"
+import { SiGnuprivacyguard } from "@react-icons/all-files/si/SiGnuprivacyguard"
 
 import '../assets/scss/main.scss'
 
