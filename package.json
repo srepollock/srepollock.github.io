@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "author": "Spencer Pollock",
   "dependencies": {
-
+    "@react-icons/all-files": "^4.1.0",
     "gatsby": "^4.4.0",
     "gatsby-plugin-gdpr-cookies": "^2.0.8",
     "gatsby-plugin-image": "^2.2.0",
