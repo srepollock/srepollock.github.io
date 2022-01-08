@@ -118,7 +118,7 @@ class Main extends React.Component {
             </li>
             <li>
               <p>
-                Director of Gaming, <Gaming Company Startup>
+                Director of Gaming, <i>Gaming Company Startup</i>
                 <br />
                 September 2021 - December 2021
               </p>
