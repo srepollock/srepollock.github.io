@@ -3,8 +3,8 @@ module.exports = {
   siteMetadata: {
     title: 'Spencer Pollock',
     author: 'Spencer Pollock',
-    siteUrl: "https://spollock.ca",
-    siteImage: "/src/images/bg.png",
+    siteUrl: 'https://spollock.ca',
+    siteImage: '/src/images/bg.png',
     description: "Spencer Pollock's Personal Webpage",
   },
   plugins: [
@@ -16,7 +16,7 @@ module.exports = {
           trackingId: 'UA-149862036-1', // leave empty if you want to disable the tracker
           cookieName: 'gatsby-gdpr-google-analytics', // default
           anonymize: true, // default
-          allowAdFeatures: false // default
+          allowAdFeatures: false, // default
         },
         googleTagManager: {
           trackingId: 'GTM-KPT8RR5', // leave empty if you want to disable the tracker
@@ -37,7 +37,7 @@ module.exports = {
           cookieName: 'gatsby-gdpr-hotjar', // default
         },
         // defines the environments where the tracking should be available  - default is ["production"]
-        environments: ['production', 'development']
+        environments: ['production', 'development'],
       },
     },
     {
@@ -81,6 +81,6 @@ module.exports = {
     },
     'gatsby-plugin-sass',
     'gatsby-plugin-offline',
-    `gatsby-plugin-sitemap`
+    `gatsby-plugin-sitemap`,
   ],
 }

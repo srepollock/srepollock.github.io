@@ -2,27 +2,20 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { StaticQuery, graphql, Link } from 'gatsby'
-import CookieConsent from "react-cookie-consent"
-import { SiGnuprivacyguard } from "@react-icons/all-files/si/SiGnuprivacyguard"
+import CookieConsent from 'react-cookie-consent'
+import { SiGnuprivacyguard } from '@react-icons/all-files/si/SiGnuprivacyguard'
 
 import '../assets/scss/main.scss'
 
 const Layout = ({ children, location }) => {
-
-  let content;
+  let content
 
   if (location && location.pathname === '/') {
-    content = (
-      <div>
-        {children}
-      </div>
-    )
+    content = <div>{children}</div>
   } else {
     content = (
       <div id="wrapper" className="page">
-        <div>
-          {children}
-        </div>
+        <div>{children}</div>
       </div>
     )
   }
@@ -38,7 +31,7 @@ const Layout = ({ children, location }) => {
           }
         }
       `}
-      render={data => (
+      render={(data) => (
         <>
           <Helmet
             title={data.site.siteMetadata.title}

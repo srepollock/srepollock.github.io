@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
-import { RiFacebookBoxFill } from "@react-icons/all-files/ri/RiFacebookBoxFill"
-import { RiTwitterFill, } from "@react-icons/all-files/ri/RiTwitterFill"
-import { RiInstagramFill } from "@react-icons/all-files/ri/RiInstagramFill"
-import { RiGithubFill } from "@react-icons/all-files/ri/RiGithubFill"
-import { RiYoutubeFill, } from "@react-icons/all-files/ri/RiYoutubeFill"
+import { Link } from 'gatsby'
+import { StaticImage } from 'gatsby-plugin-image'
+import { RiFacebookBoxFill } from '@react-icons/all-files/ri/RiFacebookBoxFill'
+import { RiTwitterFill } from '@react-icons/all-files/ri/RiTwitterFill'
+import { RiInstagramFill } from '@react-icons/all-files/ri/RiInstagramFill'
+import { RiGithubFill } from '@react-icons/all-files/ri/RiGithubFill'
+import { RiYoutubeFill } from '@react-icons/all-files/ri/RiYoutubeFill'
 import srepollock from '../images/srepollock.jpg'
 
 class Main extends React.Component {
@@ -156,7 +156,6 @@ class Main extends React.Component {
           {close}
         </article>
 
-
         <article
           id="blog"
           className={`${this.props.article === 'blog' ? 'active' : ''} ${
@@ -164,7 +163,9 @@ class Main extends React.Component {
           }`}
           style={{ display: 'none' }}
         >
-          <a href="https://srepollock.medium.com"><h2 className="major">Blog</h2></a>
+          <a href="https://srepollock.medium.com">
+            <h2 className="major">Blog</h2>
+          </a>
           {close}
         </article>
 
@@ -180,56 +181,65 @@ class Main extends React.Component {
             <img src={srepollock} alt="" height="20%" />
           </span>
           <p>
-            💻 Software Engineer | Game Developer | DevOps | Project Enthusiest | Technical Writer
+            💻 Software Engineer | Game Developer | DevOps | Project Enthusiest
+            | Technical Writer
           </p>
-          <h3>
-          🤔𝙒𝙝𝙖𝙩 𝙞𝙨 𝙎𝙥𝙚𝙣𝙘𝙚𝙧 𝙖𝙗𝙤𝙪𝙩❓
-          </h3>
+          <h3>🤔𝙒𝙝𝙖𝙩 𝙞𝙨 𝙎𝙥𝙚𝙣𝙘𝙚𝙧 𝙖𝙗𝙤𝙪𝙩❓</h3>
           <p>
-          Spencer is a motivated, hard-working individual that is working to make thing simpler through automation and integration. They are constantly seeking new challenges to approach knowing that the experience earned through them is worth more than gold. He believes that keeping up to date with emerging technologies is a great way to see new perspectives and a way to invest in future success. He also appreciates analyzing an issue from multiple perspectives, testing different solutions, before settling and saying that one is better than another.
+            Spencer is a motivated, hard-working individual that is working to
+            make thing simpler through automation and integration. They are
+            constantly seeking new challenges to approach knowing that the
+            experience earned through them is worth more than gold. He believes
+            that keeping up to date with emerging technologies is a great way to
+            see new perspectives and a way to invest in future success. He also
+            appreciates analyzing an issue from multiple perspectives, testing
+            different solutions, before settling and saying that one is better
+            than another.
           </p>
-          <h3>
-          💪𝙎𝙩𝙧𝙚𝙣𝙜𝙩𝙝𝙨💻
-          </h3>
+          <h3>💪𝙎𝙩𝙧𝙚𝙣𝙜𝙩𝙝𝙨💻</h3>
           <p>
-          Spencer pushes himself to constantly look forward and experiment with new and innovative technologies to arrive at creative solutions.
-          He is a detail-oriented person, able to communicate complex ideas to both business and technical audiences.
-          He is well versed in time management, constantly able to juggle multiple responsibilities and ongoing projects.
-          He believes utilizing not only his own knowledge but the knowledge of other teammates to tackle issues will yield the best results and develop connections to continue to grow and move forward as a team.
-          Spencer specializes in Git, C#, Python, JavaScript, DevOps, Docker, AWS, C++ as well as soft- and hard-communication skills.
-          He constantly works to improve these skills and is always willing to try new things to advance.
+            Spencer pushes himself to constantly look forward and experiment
+            with new and innovative technologies to arrive at creative
+            solutions. He is a detail-oriented person, able to communicate
+            complex ideas to both business and technical audiences. He is well
+            versed in time management, constantly able to juggle multiple
+            responsibilities and ongoing projects. He believes utilizing not
+            only his own knowledge but the knowledge of other teammates to
+            tackle issues will yield the best results and develop connections to
+            continue to grow and move forward as a team. Spencer specializes in
+            Git, C#, Python, JavaScript, DevOps, Docker, AWS, C++ as well as
+            soft- and hard-communication skills. He constantly works to improve
+            these skills and is always willing to try new things to advance.
           </p>
-          <h3>
-          👱‍♂️𝙋𝙚𝙧𝙨𝙤𝙣𝙖𝙡 𝙇𝙞𝙛𝙚👾
-          </h3>
+          <h3>👱‍♂️𝙋𝙚𝙧𝙨𝙤𝙣𝙖𝙡 𝙇𝙞𝙛𝙚👾</h3>
           <p>
-          Outside of work, Spencer has found new passions through martial arts, hiking, cooking, music, and photography. He works hard in his hobbies and tries to relate skills learned through them into his programming. He is a family-oriented individual, always making time to visit and make memories.
+            Outside of work, Spencer has found new passions through martial
+            arts, hiking, cooking, music, and photography. He works hard in his
+            hobbies and tries to relate skills learned through them into his
+            programming. He is a family-oriented individual, always making time
+            to visit and make memories.
           </p>
-          <h3>
-          🎖𝘼𝙘𝙘𝙤𝙢𝙥𝙡𝙞𝙨𝙝𝙢𝙚𝙣𝙩𝙨🏆
-          </h3>
+          <h3>🎖𝘼𝙘𝙘𝙤𝙢𝙥𝙡𝙞𝙨𝙝𝙢𝙚𝙣𝙩𝙨🏆</h3>
           <p>
-          🔴Has a bachelors degree in Computer Systems from BCIT
-          🟠Was an executive member of the BCIT Student Association
-          🟡Has his name in Spiderman: Far From Home
-          🟢Has completed iPhone, Mac, Windows hardware repairs
-          🔵Has four Referee of the Year awards split among Hockey and Lacrosse
-          🟣Can type at ~75 wpm
+            🔴Has a bachelors degree in Computer Systems from BCIT 🟠Was an
+            executive member of the BCIT Student Association 🟡Has his name in
+            Spiderman: Far From Home 🟢Has completed iPhone, Mac, Windows
+            hardware repairs 🔵Has four Referee of the Year awards split among
+            Hockey and Lacrosse 🟣Can type at ~75 wpm
           </p>
-          <h3>
-          💥𝙒𝙝𝙖𝙩 𝙮𝙤𝙪 𝙜𝙚𝙩👍
-          </h3>
+          <h3>💥𝙒𝙝𝙖𝙩 𝙮𝙤𝙪 𝙜𝙚𝙩👍</h3>
           <p>
-          🔥A highly driven and curious individual questioning process and striving to achieve more
-          🔥A detail-oriented professional that strives to constantly improve the process
-          🔥A team player
-          🔥Ability to communicate with both business and technical teams
-          🔥Ability to manage multiple high-profile projects at once
-          🔥Willing to travel
-          🔥A person that can brew an amazing cup of coffee (it’s all in the beans)
+            🔥A highly driven and curious individual questioning process and
+            striving to achieve more 🔥A detail-oriented professional that
+            strives to constantly improve the process 🔥A team player 🔥Ability
+            to communicate with both business and technical teams 🔥Ability to
+            manage multiple high-profile projects at once 🔥Willing to travel
+            🔥A person that can brew an amazing cup of coffee (it’s all in the
+            beans)
           </p>
           <p>
-          🤖Working to make things simpler through automation. 📝I’ll tell you my story as it unfolds.
+            🤖Working to make things simpler through automation. 📝I’ll tell you
+            my story as it unfolds.
           </p>
           <h3>⌨️Languages</h3>
           <p>C, C++, C#, Python, JavaScript, TypeScript, HTML, Shell</p>
