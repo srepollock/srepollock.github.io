@@ -213,8 +213,8 @@ class Main extends React.Component {
           </p>
           <h3>👱‍♂️𝙋𝙚𝙧𝙨𝙤𝙣𝙖𝙡 𝙇𝙞𝙛𝙚👾</h3>
           <p>
-            Outside of work, Spencer has found new passions through martial
-            arts, hiking, cooking, music, and photography. He works hard in his
+            Outside of work, Spencer has found new passions through, hiking, 
+            cooking, music, and philosophy. He works hard in his
             hobbies and tries to relate skills learned through them into his
             programming. He is a family-oriented individual, always making time
             to visit and make memories.
