@@ -111,9 +111,16 @@ class Main extends React.Component {
           <ul>
             <li>
               <p>
+                Director, Developer Box Inc.
+                <br />
+                June 2022 - Present
+              </p>
+            </li>
+            <li>
+              <p>
                 Senior Systems Architect, WhitecapRSC
                 <br />
-                October 2021 - Present
+                October 2021 - June 2022
               </p>
             </li>
             <li>
