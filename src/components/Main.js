@@ -118,6 +118,13 @@ class Main extends React.Component {
             </li>
             <li>
               <p>
+                DevOps Engineer, Standard Fusion
+                <br />
+                October 2022 - Present
+              </p>
+            </li>
+            <li>
+              <p>
                 Senior Systems Architect, WhitecapRSC
                 <br />
                 October 2021 - June 2022
