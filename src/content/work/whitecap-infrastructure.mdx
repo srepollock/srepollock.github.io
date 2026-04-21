@@ -1,0 +1,55 @@
+---
+title: "Building a company's internal platform from scratch"
+company: "Whitecap RSC"
+role: "Senior Systems Architect"
+dates: "2021 – 2022"
+summary: "Joined a growing consulting firm with no internal infrastructure and built it all — documentation, automation, cross-platform deployment, and the internal tooling a 10–30 person team needed to operate at scale. The thing I'm proudest of isn't the deployment pipeline. It's the wiki."
+stack:
+    - Python
+    - Shell / Bash
+    - PowerShell
+    - Cross-platform deployment (Windows, macOS, Linux)
+    - Internal wiki / documentation systems
+    - Automation tooling
+outcome:
+    - Full internal platform operational for a 10–30 person team
+    - Cross-platform endpoint automation covering Windows, macOS, and Linux
+    - Internal wiki that became the company's shared reference for operations, process, and tribal knowledge
+    - Foundation that let the firm grow without the owner becoming the single source of truth
+order: 2
+---
+
+## The problem
+
+I joined a growing risk and safety consulting firm that had no internal infrastructure. Not "legacy infrastructure in need of modernization" — none. There was no documentation, no standard deployment for new laptops, no automation, no shared system of record for how things got done. The team was small but growing, and every operational question was still routed through the people who had been there longest.
+
+The deadline was short and the scope was "everything."
+
+## The approach
+
+I had to pick what to build first, and I made a choice that surprised people: I started with the wiki.
+
+**Documentation before automation.** The instinct for most infra engineers is to build the systems first and document them later. I did the opposite. Before I wrote a single deployment script, I started capturing how the company actually operated — the tacit knowledge that lived in people's heads, the processes nobody had written down, the reasons _why_ things were done a certain way. A shared brain the company could write to and read from.
+
+This felt slow at first. It paid off almost immediately. By the time I started building automation, I had a real map of what needed to be automated and in what order. And the wiki kept accumulating value as the rest of the platform came online.
+
+**Cross-platform from day one.** The team worked across Windows, macOS, and Linux. Building three separate deployment pipelines would have been a recipe for drift. I designed the endpoint automation to treat OS as a configuration concern — same Python-driven core, platform-specific shims only where absolutely needed. This was the hardest technical lift of the engagement and the one that paid the most dividends as the team grew.
+
+**Automation anchored to documented processes.** Every automated script had a wiki entry explaining what it did, why it existed, and what to check when it broke. Automation without documentation is just magic that fails mysteriously. The wiki made the rest of the platform operable by anyone, not just me.
+
+## The outcome
+
+The qualitative version: a company that had no internal infrastructure one quarter ended the year with a functioning, documented, cross-platform internal platform that a non-technical owner could reason about.
+
+- The wiki became the thing people reached for first. "How do we do X?" stopped being a conversation and started being a link.
+- New laptops got deployed consistently across three operating systems without manual setup.
+- Day-to-day operations — logging, monitoring, inventory, invoicing, asset tracking, safety recording — all had systems behind them, and all had documentation.
+- The firm could add headcount without the existing team becoming a training bottleneck.
+
+## What I'd do differently
+
+Starting with the wiki was right. What I'd change is how I _wrote_ it. Early entries were too detailed — long procedural walkthroughs that aged badly the moment the underlying system changed. Over time I learned that the best wiki entries document the _why_ and _where_ more than the _how_: the intent behind a process, the location of the scripts or configs, the failure modes to watch for. The specific steps can usually be read from the code itself.
+
+The pattern I took from this: **the value of internal documentation is inversely proportional to how detailed it is about things that change.** The parts that change don't belong in the wiki. The parts that don't change — the reasons, the locations, the dependencies — are the whole point.
+
+It's a lesson I've carried forward into every platform engagement since.
