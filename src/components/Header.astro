@@ -1,0 +1,93 @@
+---
+// src/components/Header.astro
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname;
+const isWork = path === '/work' || path.startsWith('/work/');
+const isAbout = path === '/about';
+const isContact = path === '/contact';
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="wordmark">Spencer Pollock</a>
+    <nav aria-label="Primary">
+      <ul class="nav-list">
+        <li>
+          <a href="/work" class={isWork ? 'nav-link active' : 'nav-link'}>Work</a>
+        </li>
+        <li>
+          <a href="/about" class={isAbout ? 'nav-link active' : 'nav-link'}>About</a>
+        </li>
+        <li>
+          <a href="/contact" class={isContact ? 'nav-link active' : 'nav-link'}>Contact</a>
+        </li>
+        <li><ThemeToggle /></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    padding-block: var(--space-8);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--color-text);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .wordmark:hover {
+    color: var(--color-accent);
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    list-style: none;
+  }
+
+  .nav-link {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    padding-block: var(--space-1);
+    border-bottom: 1px solid transparent;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .nav-link:hover {
+    color: var(--color-text);
+  }
+
+  .nav-link.active {
+    color: var(--color-text);
+    border-bottom-color: var(--color-accent);
+  }
+
+  @media (max-width: 560px) {
+    .header-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+    .nav-list {
+      gap: var(--space-4);
+    }
+  }
+</style>

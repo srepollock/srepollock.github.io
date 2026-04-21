@@ -1,0 +1,157 @@
+---
+// src/pages/work/[...slug].astro
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('work', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, company, role, dates, summary, stack, outcome } = entry.data;
+---
+
+<BaseLayout title={title} description={summary}>
+  <div class="container">
+    <article class="case-study">
+      <header class="case-header">
+        <p class="mono text-subtle case-eyebrow">
+          <a href="/work" class="back-link">← Work</a>
+        </p>
+        <h1 class="case-title">{title}</h1>
+        <p class="case-meta mono text-muted">
+          {company} · {role} · {dates}
+        </p>
+        <p class="case-summary">{summary}</p>
+      </header>
+
+      <aside class="case-aside">
+        <div class="aside-block">
+          <h3 class="aside-heading mono text-subtle">Outcome</h3>
+          <ul class="aside-list">
+            {outcome.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+        <div class="aside-block">
+          <h3 class="aside-heading mono text-subtle">Stack</h3>
+          <ul class="aside-tags">
+            {stack.map((tech) => <li class="tag mono">{tech}</li>)}
+          </ul>
+        </div>
+      </aside>
+
+      <div class="case-body">
+        <Content />
+      </div>
+
+      <footer class="case-footer">
+        <a href="/work" class="mono back-link">← Back to work</a>
+      </footer>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  /* (keep all the styles from before — unchanged) */
+  .case-study {
+    padding-block: var(--space-12) var(--space-24);
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 720px) {
+    .case-study {
+      padding-block: var(--space-16) var(--space-24);
+    }
+  }
+  .case-header { margin-bottom: var(--space-12); }
+  .case-eyebrow { font-size: var(--text-sm); margin-bottom: var(--space-8); }
+  .back-link {
+    color: var(--color-text-subtle);
+    border-bottom: 1px solid transparent;
+    transition: color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+  }
+  .back-link:hover { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+  .case-title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-4);
+  }
+  .case-meta { font-size: var(--text-sm); margin-bottom: var(--space-6); }
+  .case-summary {
+    font-size: var(--text-xl);
+    line-height: 1.55;
+    color: var(--color-text-muted);
+    max-width: 38rem;
+  }
+  .case-aside {
+    display: grid;
+    gap: var(--space-8);
+    padding-block: var(--space-8);
+    margin-block: var(--space-8);
+    border-block: 1px solid var(--color-border);
+  }
+  @media (min-width: 720px) {
+    .case-aside { grid-template-columns: 1fr 1fr; gap: var(--space-12); }
+  }
+  .aside-heading {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-3);
+  }
+  .aside-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+  .aside-list li {
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--color-text);
+    padding-left: var(--space-4);
+    position: relative;
+  }
+  .aside-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+  }
+  .aside-tags { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .tag {
+    font-size: var(--text-xs);
+    padding: 0.25rem 0.6rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+  }
+  .case-body :global(h2) {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-block: var(--space-12) var(--space-4);
+  }
+  .case-body :global(h2:first-child) { margin-top: 0; }
+  .case-body :global(h3) {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-block: var(--space-8) var(--space-3);
+  }
+  .case-body :global(p) { margin-bottom: var(--space-4); line-height: 1.7; color: var(--color-text); }
+  .case-body :global(strong) { color: var(--color-text); font-weight: 600; }
+  .case-body :global(ul) { margin-bottom: var(--space-4); padding-left: var(--space-6); }
+  .case-body :global(li) { margin-bottom: var(--space-2); line-height: 1.65; }
+  .case-footer { margin-top: var(--space-16); padding-top: var(--space-6); border-top: 1px solid var(--color-border); }
+</style>

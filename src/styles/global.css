@@ -1,0 +1,268 @@
+/* src/styles/global.css */
+
+/* ==========================================================================
+   Fonts
+   ========================================================================== */
+@import "@fontsource-variable/fraunces";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource-variable/jetbrains-mono";
+
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+:root {
+    /* Type families */
+    --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+    --font-body: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    --font-mono:
+        "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+
+    /* Type scale (modular, 1.25 ratio) */
+    --text-xs: 0.8rem;
+    --text-sm: 0.9rem;
+    --text-base: 1rem;
+    --text-lg: 1.15rem;
+    --text-xl: 1.35rem;
+    --text-2xl: 1.7rem;
+    --text-3xl: 2.2rem;
+    --text-4xl: 2.9rem;
+    --text-5xl: 3.75rem;
+
+    /* Spacing scale */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-24: 6rem;
+    --space-32: 8rem;
+
+    /* Layout */
+    --measure: 68ch; /* optimal reading width */
+    --max-width: 72rem; /* page container */
+
+    /* Motion */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-fast: 150ms;
+    --duration-base: 250ms;
+
+    /* Radii */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+}
+
+/* Light theme (default) */
+:root,
+:root[data-theme="light"] {
+    --color-bg: #f8f9fa;
+    --color-surface: #eef0f3;
+    --color-text: #0b0d10;
+    --color-text-muted: #4a4f57;
+    --color-text-subtle: #8b9099;
+    --color-border: #dde0e4;
+    --color-accent: #1d5a63;
+    --color-accent-hover: #144349;
+    --color-code-bg: #eef0f3;
+}
+
+/* Dark theme */
+:root[data-theme="dark"] {
+    --color-bg: #0c0e11;
+    --color-surface: #14171b;
+    --color-text: #e4e7ec;
+    --color-text-muted: #9ba0a8;
+    --color-text-subtle: #6b7078;
+    --color-border: #232830;
+    --color-accent: #5ab4be;
+    --color-accent-hover: #7ac6ce;
+    --color-code-bg: #14171b;
+}
+
+/* System preference fallback (before JS sets data-theme) */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        --color-bg: #0c0e11;
+        --color-surface: #14171b;
+        --color-text: #e4e7ec;
+        --color-text-muted: #9ba0a8;
+        --color-text-subtle: #6b7078;
+        --color-border: #232830;
+        --color-accent: #5ab4be;
+        --color-accent-hover: #7ac6ce;
+        --color-code-bg: #14171b;
+    }
+}
+
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   Base typography
+   ========================================================================== */
+body {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.65;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    transition:
+        background-color var(--duration-base) var(--ease-out),
+        color var(--duration-base) var(--ease-out);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+}
+
+h1 {
+    font-size: var(--text-5xl);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+}
+
+h2 {
+    font-size: var(--text-3xl);
+}
+
+h3 {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    font-family: var(--font-body);
+    letter-spacing: -0.01em;
+}
+
+p {
+    max-width: var(--measure);
+}
+
+code,
+pre {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+}
+
+code {
+    background-color: var(--color-code-bg);
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-sm);
+}
+
+pre {
+    background-color: var(--color-code-bg);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    line-height: 1.5;
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+a {
+    color: var(--color-accent);
+    transition: color var(--duration-fast) var(--ease-out);
+}
+
+a:hover {
+    color: var(--color-accent-hover);
+}
+
+/* ==========================================================================
+   Selection
+   ========================================================================== */
+::selection {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding-inline: var(--space-6);
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding-inline: var(--space-8);
+    }
+}
+
+.mono {
+    font-family: var(--font-mono);
+    font-size: 0.95em;
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.text-subtle {
+    color: var(--color-text-subtle);
+}
+
+/* Visually hidden but accessible to screen readers */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

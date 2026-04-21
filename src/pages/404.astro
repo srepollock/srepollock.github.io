@@ -1,0 +1,81 @@
+---
+// src/pages/404.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Not found"
+  description="The page you're looking for isn't here."
+>
+  <div class="container">
+    <article class="notfound">
+      <p class="mono text-subtle notfound-code">404</p>
+      <h1 class="notfound-title">Not found.</h1>
+      <p class="notfound-body">
+        The page you're looking for isn't here — either it moved, or it
+        never existed in the first place.
+      </p>
+      <ul class="notfound-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/work">Work</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .notfound {
+    padding-block: var(--space-24);
+    max-width: 40rem;
+    margin-inline: auto;
+    text-align: left;
+  }
+
+  .notfound-code {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: var(--space-4);
+  }
+
+  .notfound-title {
+    font-family: var(--font-display);
+    font-size: var(--text-5xl);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-6);
+  }
+
+  .notfound-body {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+    max-width: var(--measure);
+  }
+
+  .notfound-links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+
+  .notfound-links a {
+    color: var(--color-text-muted);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 2px;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .notfound-links a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+</style>

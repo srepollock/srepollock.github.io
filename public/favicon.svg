@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .fg { fill: #1d5a63; }
+    @media (prefers-color-scheme: dark) {
+      .fg { fill: #5ab4be; }
+    }
+  </style>
+  <rect width="32" height="32" rx="6" fill="none" />
+  <text
+    x="16"
+    y="22"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="20"
+    font-weight="400"
+    font-style="italic"
+    class="fg"
+  >sp</text>
+</svg>

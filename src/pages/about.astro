@@ -1,0 +1,150 @@
+---
+// src/pages/about.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="A little background on Spencer Pollock — platform and developer-experience engineer in North Vancouver, BC."
+>
+  <div class="container">
+    <article class="about">
+      <header class="about-header">
+        <p class="mono text-subtle page-eyebrow">About</p>
+        <h1 class="about-title">A little background.</h1>
+      </header>
+
+      <div class="about-body">
+        <p>
+          I'm a platform and developer experience engineer based in North
+          Vancouver, BC. I care about the hundred small frictions between
+          code and production — the build that takes too long, the deploy
+          that's manual, the error that only shows up in prod. I've spent
+          the last six years removing them for product teams.
+        </p>
+
+        <p>
+          Most recently at Wolters Kluwer (via the StandardFusion
+          acquisition), where I designed the custom delivery framework that
+          cut customer deployment times by 40%. Before that, infrastructure
+          and systems work at Whitecap RSC, and game systems at Night
+          Garden Studios on two released titles.
+        </p>
+
+        <p>
+          I think the best platform work is quiet. You notice it because
+          deploys got faster, errors got rarer, and the team stopped having
+          the same conversation every Friday. The work itself rarely makes
+          it into a demo — but it's what lets everything else happen.
+        </p>
+
+        <p>
+          Outside of work: hiking, cooking, and twenty years refereeing
+          lacrosse at all levels.
+        </p>
+      </div>
+
+      <aside class="about-meta">
+        <dl class="meta-list">
+          <div class="meta-row">
+            <dt class="mono text-subtle">Based in</dt>
+            <dd>North Vancouver, BC</dd>
+          </div>
+          <div class="meta-row">
+            <dt class="mono text-subtle">Currently</dt>
+            <dd>Senior Product Software Developer, Wolters Kluwer</dd>
+          </div>
+          <div class="meta-row">
+            <dt class="mono text-subtle">Also</dt>
+            <dd>Running Developer Box Inc.</dd>
+          </div>
+          <div class="meta-row">
+            <dt class="mono text-subtle">Education</dt>
+            <dd>B.Tech, Computer Systems Technology — BCIT</dd>
+          </div>
+          <div class="meta-row">
+            <dt class="mono text-subtle">Open to</dt>
+            <dd>Senior / Staff platform and DevEx roles</dd>
+          </div>
+        </dl>
+      </aside>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-block: var(--space-16) var(--space-24);
+    max-width: 44rem;
+    margin-inline: auto;
+  }
+
+  .about-header {
+    margin-bottom: var(--space-12);
+  }
+
+  .page-eyebrow {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-4);
+  }
+
+  .about-title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+
+  .about-body {
+    margin-bottom: var(--space-16);
+  }
+
+  .about-body p {
+    font-size: var(--text-lg);
+    line-height: 1.7;
+    color: var(--color-text);
+    margin-bottom: var(--space-6);
+    max-width: var(--measure);
+  }
+
+  .about-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .about-meta {
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .meta-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .meta-row {
+    display: grid;
+    grid-template-columns: 10rem 1fr;
+    gap: var(--space-4);
+    align-items: baseline;
+  }
+
+  .meta-row dt {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .meta-row dd {
+    font-size: var(--text-base);
+    color: var(--color-text);
+  }
+
+  @media (max-width: 560px) {
+    .meta-row {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+  }
+</style>

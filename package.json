@@ -1,0 +1,21 @@
+{
+  "name": "tender-telescope",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^5.0.3",
+    "@fontsource-variable/fraunces": "^5.2.9",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@fontsource/ibm-plex-sans": "^5.2.8",
+    "astro": "^6.1.8"
+  }
+}
