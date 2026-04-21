@@ -21,6 +21,10 @@
       Read the case study <span aria-hidden="true">→</span>
     </p>
   </a>
+
+  <p class="featured-all">
+    <a href="/work" class="mono">All work <span aria-hidden="true">→</span></a>
+  </p>
 </section>
 
 <style>
@@ -78,6 +82,22 @@
 
   .featured-cta {
     font-size: var(--text-sm);
+    color: var(--color-accent);
+  }
+
+  .featured-all {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+  }
+
+  .featured-all a {
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .featured-all a:hover {
     color: var(--color-accent);
   }
 

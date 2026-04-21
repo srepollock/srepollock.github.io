@@ -63,9 +63,15 @@ const { title, company, role, dates, summary, stack, outcome } = entry.data;
 <style>
   /* (keep all the styles from before — unchanged) */
   .case-study {
-    padding-block: var(--space-16) var(--space-24);
+    padding-block: var(--space-12) var(--space-24);
     max-width: 48rem;
     margin-inline: auto;
+  }
+
+  @media (min-width: 720px) {
+    .case-study {
+      padding-block: var(--space-16) var(--space-24);
+    }
   }
   .case-header { margin-bottom: var(--space-12); }
   .case-eyebrow { font-size: var(--text-sm); margin-bottom: var(--space-8); }
