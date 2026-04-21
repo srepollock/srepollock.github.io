@@ -1,0 +1,45 @@
+---
+// src/components/Footer.astro
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-meta">
+      © {year} Spencer Pollock · Built with <a href="https://astro.build">Astro</a> ·
+      <a href="https://github.com/srepollock/srepollock.github.io">Source</a>
+    </p>
+    <p class="footer-availability">
+      Currently open to Senior / Staff platform and developer-experience roles.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-24);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .footer-availability {
+    color: var(--color-text-subtle);
+    font-style: italic;
+  }
+
+  @media (min-width: 720px) {
+    .footer-inner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+  }
+</style>

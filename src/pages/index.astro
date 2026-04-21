@@ -1,17 +1,18 @@
 ---
-
+// src/pages/index.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Spencer Pollock">
+  <div class="container">
+    <section class="placeholder">
+      <p class="mono text-subtle">Hero coming in phase 3.</p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .placeholder {
+    padding-block: var(--space-24);
+  }
+</style>
