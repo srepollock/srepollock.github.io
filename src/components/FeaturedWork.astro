@@ -1,0 +1,90 @@
+---
+// src/components/FeaturedWork.astro
+---
+
+<section class="featured">
+  <p class="section-label mono text-subtle">Selected work</p>
+
+  <a href="/work/cicd-framework" class="featured-card">
+    <h2 class="featured-title">Custom CI/CD delivery framework</h2>
+    <p class="featured-meta mono text-subtle">
+      Wolters Kluwer · 2022–present
+    </p>
+    <p class="featured-description">
+      A modern CI/CD pipeline architected from the ground up for a GRC SaaS
+      product with hybrid cloud (AWS + Azure) and global on-premise
+      deployments. Replaced a manual release process with automated testing,
+      containerization, and progressive deployment — cutting customer
+      deployment times by 40%.
+    </p>
+    <p class="featured-cta mono">
+      Read the case study <span aria-hidden="true">→</span>
+    </p>
+  </a>
+</section>
+
+<style>
+  .featured {
+    padding-block: var(--space-16);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .section-label {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-8);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .featured-card {
+    display: block;
+    color: inherit;
+    padding: var(--space-8);
+    margin-inline: calc(var(--space-8) * -1);
+    border-radius: var(--radius-md);
+    transition: background-color var(--duration-base) var(--ease-out);
+  }
+
+  .featured-card:hover {
+    background-color: var(--color-surface);
+  }
+
+  .featured-title {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-2);
+    color: var(--color-text);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .featured-card:hover .featured-title {
+    color: var(--color-accent);
+  }
+
+  .featured-meta {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
+  }
+
+  .featured-description {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+    max-width: var(--measure);
+  }
+
+  .featured-cta {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 560px) {
+    .featured-card {
+      padding: var(--space-6);
+      margin-inline: calc(var(--space-6) * -1);
+    }
+  }
+</style>

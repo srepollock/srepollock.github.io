@@ -1,40 +1,17 @@
 ---
 // src/components/Header.astro
 import ThemeToggle from './ThemeToggle.astro';
-
-const pathname = Astro.url.pathname;
-const isActive = (path: string) => {
-  if (path === '/') return pathname === '/';
-  return pathname.startsWith(path);
-};
-
-const navItems = [
-  { href: '/work', label: 'Work' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
 ---
 
 <header class="site-header">
   <div class="container header-inner">
-    <a href="/" class="wordmark" aria-label="Spencer Pollock, home">
-      <span class="wordmark-name">Spencer Pollock</span>
-    </a>
+    <a href="/" class="wordmark">Spencer Pollock</a>
     <nav aria-label="Primary">
       <ul class="nav-list">
-        {navItems.map(item => (
-          <li>
-            
-              href={item.href}
-              class:list={['nav-link', { active: isActive(item.href) }]}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
-        <li>
-          <ThemeToggle />
-        </li>
+        <li><a href="/work" class="nav-link">Work</a></li>
+        <li><a href="/about" class="nav-link">About</a></li>
+        <li><a href="/contact" class="nav-link">Contact</a></li>
+        <li><ThemeToggle /></li>
       </ul>
     </nav>
   </div>
@@ -85,11 +62,6 @@ const navItems = [
 
   .nav-link:hover {
     color: var(--color-text);
-  }
-
-  .nav-link.active {
-    color: var(--color-text);
-    border-bottom-color: var(--color-accent);
   }
 
   @media (max-width: 560px) {

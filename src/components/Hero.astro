@@ -1,0 +1,116 @@
+---
+// src/components/Hero.astro
+---
+
+<section class="hero">
+  <p class="hero-eyebrow">Spencer Pollock</p>
+  <h1 class="hero-headline">
+    Platform and developer<br />experience engineer.
+  </h1>
+  <p class="hero-subhead">
+    I build the systems between <code>git push</code> and production — CI/CD
+    pipelines, delivery infrastructure, and the tooling product teams ship
+    with.
+  </p>
+  <p class="hero-supporting">
+    Currently at Wolters Kluwer, where a custom delivery framework I designed
+    cut customer deployment times by <strong>40%</strong>.
+  </p>
+  <p class="hero-location text-subtle">Based in North Vancouver, BC.</p>
+
+  <ul class="hero-links">
+    <li>
+      <a href="mailto:spencer@spollock.ca">Email</a>
+    </li>
+    <li>
+      <a href="https://github.com/srepollock" target="_blank" rel="noopener">
+        GitHub
+      </a>
+    </li>
+    <li>
+      <a href="https://linkedin.com/in/srepollock" target="_blank" rel="noopener">
+        LinkedIn
+      </a>
+    </li>
+  </ul>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-24) var(--space-16);
+    max-width: 52rem;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
+    margin-bottom: var(--space-6);
+    letter-spacing: 0.02em;
+  }
+
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(var(--text-4xl), 6vw, var(--text-5xl));
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-8);
+    color: var(--color-text);
+  }
+
+  .hero-subhead {
+    font-size: var(--text-xl);
+    line-height: 1.5;
+    color: var(--color-text);
+    max-width: 40rem;
+    margin-bottom: var(--space-6);
+  }
+
+  .hero-subhead code {
+    font-size: 0.88em;
+    background: var(--color-code-bg);
+    color: var(--color-accent);
+    padding: 0.1em 0.35em;
+  }
+
+  .hero-supporting {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: 40rem;
+    margin-bottom: var(--space-6);
+  }
+
+  .hero-supporting strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .hero-location {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-12);
+  }
+
+  .hero-links {
+    display: flex;
+    gap: var(--space-6);
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+
+  .hero-links a {
+    color: var(--color-text-muted);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 2px;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .hero-links a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+</style>
