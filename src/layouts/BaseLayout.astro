@@ -1,6 +1,7 @@
 ---
 // src/layouts/BaseLayout.astro
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -30,15 +31,22 @@ const fullTitle = title === siteTitle ? title : `${title} — ${siteTitle}`;
 
     {/* Inline script: set theme before first paint to avoid FOUC */}
     <script is:inline>
-      (function () {
-        const stored = localStorage.getItem('theme');
-        if (stored === 'light' || stored === 'dark') {
-          document.documentElement.setAttribute('data-theme', stored);
-        }
-        // Otherwise, no data-theme attribute is set and CSS
-        // @media (prefers-color-scheme) handles it.
-      })();
+        (function () {
+            const stored = localStorage.getItem('theme');
+            if (stored === 'light' || stored === 'dark') {
+            document.documentElement.setAttribute('data-theme', stored);
+            }
+        })();
+
+        document.addEventListener('astro:after-swap', () => {
+            const stored = localStorage.getItem('theme');
+            if (stored === 'light' || stored === 'dark') {
+            document.documentElement.setAttribute('data-theme', stored);
+            }
+        });
     </script>
+
+    <ClientRouter />
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
