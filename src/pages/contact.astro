@@ -1,0 +1,145 @@
+---
+// src/pages/contact.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Best reached by email. Also on GitHub and LinkedIn."
+>
+  <div class="container">
+    <article class="contact">
+      <header class="contact-header">
+        <p class="mono text-subtle page-eyebrow">Contact</p>
+        <h1 class="contact-title">Let's talk.</h1>
+      </header>
+
+      <p class="contact-lede">
+        Best reached by email. I reply to everything — usually within a day
+        or two.
+      </p>
+
+      <a href="mailto:spencer@spollock.ca" class="contact-email mono">
+        spencer@spollock.ca
+      </a>
+
+      <section class="contact-elsewhere">
+        <h2 class="elsewhere-heading mono text-subtle">Elsewhere</h2>
+        <ul class="elsewhere-list">
+          <li>
+            <a href="https://github.com/srepollock" target="_blank" rel="noopener">
+              GitHub
+            </a>
+            <span class="elsewhere-note text-subtle">
+              — code and projects
+            </span>
+          </li>
+          <li>
+            <a href="https://linkedin.com/in/srepollock" target="_blank" rel="noopener">
+              LinkedIn
+            </a>
+            <span class="elsewhere-note text-subtle">
+              — full work history
+            </span>
+          </li>
+          <li>
+            <a href="https://srepollock.medium.com" target="_blank" rel="noopener">
+              Medium
+            </a>
+            <span class="elsewhere-note text-subtle">
+              — older writing
+            </span>
+          </li>
+        </ul>
+      </section>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .contact {
+    padding-block: var(--space-16) var(--space-24);
+    max-width: 40rem;
+    margin-inline: auto;
+  }
+
+  .contact-header {
+    margin-bottom: var(--space-8);
+  }
+
+  .page-eyebrow {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-4);
+  }
+
+  .contact-title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+
+  .contact-lede {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+    max-width: var(--measure);
+  }
+
+  .contact-email {
+    display: inline-block;
+    font-size: var(--text-2xl);
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-16);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .contact-email:hover {
+    color: var(--color-accent-hover);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .contact-elsewhere {
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .elsewhere-heading {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-4);
+  }
+
+  .elsewhere-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .elsewhere-list a {
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1px;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .elsewhere-list a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .elsewhere-note {
+    font-size: var(--text-sm);
+  }
+</style>

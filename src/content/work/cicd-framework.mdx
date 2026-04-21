@@ -1,0 +1,53 @@
+---
+title: "Custom CI/CD delivery framework"
+company: "Wolters Kluwer (via StandardFusion)"
+role: "Senior DevOps / Platform Engineer"
+dates: "2022 – present"
+summary: "A modern CI/CD pipeline architected from the ground up for a GRC SaaS product with hybrid cloud and global on-premise deployments. Replaced a manual release process with automated testing, containerization, and progressive deployment — cutting customer deployment times by 40%."
+stack:
+    - AWS
+    - Azure
+    - Docker
+    - GitHub Actions
+    - Infrastructure as Code
+    - Progressive deployment
+outcome:
+    - 40% improvement in deployment velocity for customers
+    - Drastic reduction in manual-error risk across releases
+    - Framework became the standard operating model for customer rollouts
+    - Scaled to support a global customer base across mixed hybrid and on-prem topologies
+order: 1
+---
+
+## The problem
+
+The team shipped a governance, risk, and compliance SaaS product to a global customer base running a mix of hosted and on-premise deployments. The existing delivery process was manual, inconsistent, and slow — every customer release required hands-on coordination, and small human errors could turn into large customer-facing incidents.
+
+Our customers felt it. Our engineers felt it. And as the product and customer base grew, the process wasn't going to scale.
+
+## The approach
+
+Rather than patch the existing pipeline, I made the case for rebuilding it from first principles — a single delivery framework that worked the same way across hybrid cloud (AWS + Azure) and on-prem environments, automated the slow parts, and removed the human error surface.
+
+The framework rested on four decisions:
+
+**Evidence before architecture.** Before writing any pipeline code, I mapped the actual bottlenecks in the existing process. Which stages cost the most time? Where did errors originate? Which steps required human judgment and which only looked like they did? This turned delivery engineering from a guessing game into a set of concrete problems to solve.
+
+**One pipeline, many topologies.** Customers ran us in cloud-hosted and fully on-premise configurations. Building two delivery systems would have doubled the maintenance burden and guaranteed drift. The framework was designed to treat topology as a configuration concern, not a fork in the pipeline.
+
+**Progressive deployment by default.** Manual releases concentrate blast radius. The new framework rolled changes out progressively — small cohorts first, then wider — so problems surfaced against small blast radiuses rather than global ones.
+
+**SOPs as a first-class artifact.** A framework only one person can operate isn't a framework. I documented the operating procedures alongside the code so the rest of the team could own, extend, and troubleshoot the system without me in the loop.
+
+## The outcome
+
+- **40% improvement in deployment velocity** for customers. The number that mattered most to the business.
+- **Drastic reduction in manual-error risk** across releases. Harder to measure precisely, but real — the category of incident that used to dominate our postmortems went quiet.
+- The framework became **the standard operating model for customer rollouts**, not a one-off experiment.
+- It scaled with the customer base across the full hybrid-to-on-prem spectrum without needing structural rework.
+
+## What I'd do differently
+
+A year in, the thing I'd reconsider is how much of the progressive deployment logic lives in the pipeline versus the application. We chose pipeline because it kept product engineers focused on product. It was the right trade for where the team was at the time. If I were starting over with the benefit of hindsight and a different team shape, I'd push more of the rollout control into the application layer — it moves the decision closer to the code that needs to make it.
+
+That trade-off is the one I think about most when looking at new platform and DevEx problems now.

@@ -1,0 +1,145 @@
+---
+// src/pages/work/index.astro
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const entries = (await getCollection('work', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<BaseLayout
+  title="Work"
+  description="Selected platform and developer-experience work by Spencer Pollock."
+>
+  <div class="container">
+    <header class="page-header">
+      <p class="mono text-subtle page-eyebrow">Work</p>
+      <h1 class="page-title">Selected work</h1>
+      <p class="page-lede">
+        Platform and developer-experience engagements. Each one is a
+        real shipped system with outcomes that moved real numbers.
+      </p>
+    </header>
+
+    <ul class="work-list">
+      {entries.map((entry) => (
+        <li class="work-item">
+          <a href={`/work/${entry.id}`} class="work-link">
+            <div class="work-title-row">
+              <h2 class="work-title">{entry.data.title}</h2>
+              <span class="work-dates mono text-subtle">{entry.data.dates}</span>
+            </div>
+            <p class="work-company mono text-muted">
+              {entry.data.company} · {entry.data.role}
+            </p>
+            <p class="work-summary">{entry.data.summary}</p>
+            <p class="work-cta mono">
+              Read the case study <span aria-hidden="true">→</span>
+            </p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding-block: var(--space-16) var(--space-12);
+    max-width: var(--measure);
+  }
+
+  .page-eyebrow {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-4);
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-6);
+  }
+
+  .page-lede {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .work-list {
+    list-style: none;
+    padding-bottom: var(--space-16);
+  }
+
+  .work-item {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .work-item:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .work-link {
+    display: block;
+    padding-block: var(--space-8);
+    color: inherit;
+    transition: background-color var(--duration-base) var(--ease-out);
+    padding-inline: var(--space-4);
+    margin-inline: calc(var(--space-4) * -1);
+    border-radius: var(--radius-md);
+  }
+
+  .work-link:hover {
+    background-color: var(--color-surface);
+  }
+
+  .work-title-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-2);
+  }
+
+  .work-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .work-link:hover .work-title {
+    color: var(--color-accent);
+  }
+
+  .work-dates {
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+
+  .work-company {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-3);
+  }
+
+  .work-summary {
+    font-size: var(--text-base);
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    max-width: var(--measure);
+    margin-bottom: var(--space-4);
+  }
+
+  .work-cta {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+  }
+</style>
