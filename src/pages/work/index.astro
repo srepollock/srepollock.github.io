@@ -18,7 +18,8 @@ const entries = (await getCollection('work', ({ data }) => !data.draft)).sort(
       <h1 class="page-title">Selected work</h1>
       <p class="page-lede">
         Platform and developer-experience engagements. Each one is a
-        real shipped system with outcomes that moved real numbers.
+        real shipped system with outcomes that moved real numbers — or, in
+        at least one case, moved a real team.
       </p>
     </header>
 
@@ -41,6 +42,37 @@ const entries = (await getCollection('work', ({ data }) => !data.draft)).sort(
         </li>
       ))}
     </ul>
+
+    <section class="earlier">
+      <h2 class="earlier-heading mono text-subtle">Earlier</h2>
+      <ul class="earlier-list">
+        <li class="earlier-item">
+          <div class="earlier-title-row">
+            <h3 class="earlier-title">Developer tooling at Sony Imageworks</h3>
+            <span class="earlier-dates mono text-subtle">2016 – 2019</span>
+          </div>
+          <p class="earlier-body">
+            Internships and a full-time role supporting 800+ artists across
+            3,000+ systems. Shipped a Python command-line tool for internal
+            operations and a git pre-commit hook that cut three steps out of
+            the code review loop for the production engineering team. Early
+            DevEx work, before I knew to call it that.
+          </p>
+        </li>
+        <li class="earlier-item">
+          <div class="earlier-title-row">
+            <h3 class="earlier-title">Game systems at Night Garden Studios</h3>
+            <span class="earlier-dates mono text-subtle">2020 – 2021</span>
+          </div>
+          <p class="earlier-body">
+            Unity3D / C# systems engineering across two released mobile
+            titles — Dragon Up Idle Adventure and RuPaul's Drag Race:
+            Superstar. In-game economy, UI, localization, and analytics
+            (Firebase + BigQuery + Data Studio).
+          </p>
+        </li>
+      </ul>
+    </section>
   </div>
 </BaseLayout>
 
@@ -73,7 +105,7 @@ const entries = (await getCollection('work', ({ data }) => !data.draft)).sort(
 
   .work-list {
     list-style: none;
-    padding-bottom: var(--space-16);
+    padding-bottom: var(--space-12);
   }
 
   .work-item {
@@ -142,4 +174,20 @@ const entries = (await getCollection('work', ({ data }) => !data.draft)).sort(
     font-size: var(--text-sm);
     color: var(--color-accent);
   }
-</style>
+
+  /* Earlier section */
+  .earlier {
+    padding-block: var(--space-12) var(--space-16);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .earlier-heading {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-8);
+  }
+
+  .earlier-list {
+    list-style: none;
+    display: flex;
