@@ -20,6 +20,9 @@ for (const route of routes) {
   test(`renders ${route.path}`, async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
+    page.on("console", (message) => {
+      if (message.text().includes("Shader Error") || message.text().includes("THREE.WebGLProgram")) errors.push(message.text().slice(0, 300));
+    });
     await page.goto(route.path);
     await hydrated(page);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(route.heading);

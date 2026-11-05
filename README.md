@@ -23,7 +23,8 @@ yarn test:e2e     # Playwright against ./out (run `yarn build` first)
 | `content/work/*.mdx` | Case-study bodies |
 | `src/lib/districts.ts` | Route → district mapping and camera poses |
 | `src/lib/devbox.ts` | Developer Box project links (`https://developerbox.ca/projects/<slug>/`) |
-| `src/components/city/` | The 3D scene: generation, shaders, camera flights, traffic lanes, fallback skyline |
+| `src/components/city/` | The 3D scene: generation, massing, shaders, camera flights, bloom, fallback skyline |
+| `src/components/city/sim/` | Street traffic (signals, IDM car-following, turns), pedestrians and the SkyTrain, as pure, allocation-free simulations |
 | `src/lib/terminal.ts` | ⌘K shell commands (pure; the UI in `src/components/ui/Terminal.tsx` applies their effects) |
 
 ## Adding a project
@@ -47,6 +48,13 @@ Press `F`, use the plane button in the header, or run `fly` in the shell. WASD o
 move, drag looks around, E/Q climb and descend, Shift boosts, and Esc lands. Clicking a district's
 beacon lands you there. Touch devices get an on-screen pad. The free-fly camera, the 3D extras, the
 rain and the traffic each load as separate chunks after the city.
+
+## Quality
+
+The city measures its frame rate live and steps quality down when it can't hold 60 fps (30 on
+low-tier devices). It sheds bloom first, then resolution, then pedestrians and half the cars, and
+climbs back after sustained headroom. Add `?city-quality=0`–`3` to the URL to pin a level and turn
+adaptation off. That's useful for comparing levels or profiling.
 
 ## Degradation
 
