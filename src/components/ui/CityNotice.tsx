@@ -22,11 +22,24 @@ export function CityNotice() {
     >
       <p className="font-mono text-xs text-amber">static skyline mode</p>
       {status.state === "unsupported" ? (
-        <p className="mt-2 text-muted">
-          Your browser isn&apos;t providing WebGL, so the 3D city can&apos;t render. Usually that means hardware
-          acceleration is off. In Chrome or Edge, turn on <em>Settings → System → Use graphics acceleration when
-          available</em> and reload.
-        </p>
+        <>
+          <p className="mt-2 text-muted">
+            Your browser didn&apos;t give this page a WebGL context, so the 3D city can&apos;t render.
+          </p>
+          {status.detail && (
+            <p className="mt-2 break-words font-mono text-xs text-ink" data-testid="webgl-error">
+              Browser says: {status.detail}
+            </p>
+          )}
+          <ul className="mt-2 list-disc space-y-1 pl-4 text-xs text-muted">
+            <li>Hardware acceleration is off (Settings → System).</li>
+            <li>Chrome disabled WebGL after a GPU crash: fully quit and reopen the browser.</li>
+            <li>
+              Your GPU or driver is blocklisted: check the WebGL lines in <code className="text-ink">chrome://gpu</code>.
+            </li>
+            <li>An extension is blocking WebGL: try an incognito window.</li>
+          </ul>
+        </>
       ) : (
         <p className="mt-2 text-muted">
           The 3D city stopped because {status.reason}. Switch the city off and on to retry.

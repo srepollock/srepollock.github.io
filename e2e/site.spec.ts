@@ -98,7 +98,7 @@ test.describe("without WebGL", () => {
     await hydrated(page);
     await expect(page.getByTestId("skyline-fallback")).toBeVisible();
     await expect(page.getByTestId("city-canvas")).toHaveCount(0);
-    await expect(page.getByTestId("city-notice")).toContainText("isn't providing WebGL");
+    await expect(page.getByTestId("city-notice")).toContainText("didn't give this page a WebGL context");
     await expect(page.getByTestId("css-rain")).toHaveCount(0);
     await page.getByRole("button", { name: /Make it rain/ }).click();
     await expect(page.getByTestId("css-rain")).toBeAttached();

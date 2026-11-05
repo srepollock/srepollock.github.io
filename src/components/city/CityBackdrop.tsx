@@ -11,18 +11,26 @@ import { CityErrorBoundary } from "./CityErrorBoundary";
 
 const CityCanvas = dynamic(() => import("./CityCanvas"), { ssr: false });
 
-type Environment = { webgl: boolean; reducedMotion: boolean; quality: QualityProfile };
+type Environment = { webgl: boolean; webglError: string | null; reducedMotion: boolean; quality: QualityProfile };
 
 let cachedEnvironment: Environment | null = null;
 
-function supportsWebGL(): boolean {
+type WebGLProbe = { ok: boolean; error: string | null };
+
+function probeWebGL(): WebGLProbe {
+  const messages: string[] = [];
   try {
     const canvas = document.createElement("canvas");
+    // Fired synchronously inside getContext when the browser refuses; statusMessage says why.
+    canvas.addEventListener("webglcontextcreationerror", (event) => {
+      const message = (event as WebGLContextEvent).statusMessage;
+      if (message) messages.push(message);
+    });
     const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
     gl?.getExtension("WEBGL_lose_context")?.loseContext();
-    return gl !== null;
-  } catch {
-    return false;
+    return { ok: gl !== null, error: gl ? null : ([...new Set(messages)].join(" / ") || null) };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : String(error) };
   }
 }
 
@@ -36,8 +44,10 @@ function readEnvironment(): Environment {
     viewportWidth: window.innerWidth,
     saveData: nav.connection?.saveData === true,
   });
+  const probe = probeWebGL();
   cachedEnvironment = {
-    webgl: supportsWebGL(),
+    webgl: probe.ok,
+    webglError: probe.error,
     reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     quality: qualityProfile(tier),
   };
@@ -61,7 +71,7 @@ export function CityBackdrop() {
   const status = useCityStatus();
 
   useEffect(() => {
-    if (environment && !environment.webgl) setCityStatus({ state: "unsupported" });
+    if (environment && !environment.webgl) setCityStatus({ state: "unsupported", detail: environment.webglError });
   }, [environment]);
 
   if (!environment || !environment.webgl || !settings.city || status.state === "failed") return null;
