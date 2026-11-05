@@ -14,7 +14,7 @@ export default function WorkPage() {
     <div className="mx-auto max-w-7xl px-4 pb-24 pt-8 sm:px-8">
       <div className="panel max-w-3xl p-6 sm:p-10">
         <PageIntro eyebrow="~/work" title="Where I've shipped">
-          Seven years across delivery engineering, internal platforms and game systems. The common thread: find the
+          VFX pipeline tooling, game systems, internal platforms and delivery engineering. The common thread: find the
           friction between code and customers, then remove it — and write down how so it stays removed.
         </PageIntro>
 

@@ -62,6 +62,20 @@ export const roles: readonly Role[] = [
     stack: ["Unity3D", "C#", "Firebase", "BigQuery"],
     caseStudies: [],
   },
+  {
+    company: "Sony Pictures Imageworks",
+    title: "Developer tooling — internships and full-time",
+    start: "2016",
+    end: "2019",
+    summary:
+      "Supported 800+ artists across 3,000+ systems. Early developer-experience work, before I knew to call it that.",
+    highlights: [
+      "Shipped a Python command-line tool for internal operations.",
+      "Wrote a git pre-commit hook that cut three steps out of the production engineering team's code review loop.",
+    ],
+    stack: ["Python", "Git", "Linux"],
+    caseStudies: [],
+  },
 ];
 
 export type Education = {
