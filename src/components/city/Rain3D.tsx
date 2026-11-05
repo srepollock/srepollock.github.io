@@ -28,6 +28,7 @@ export const rainFragment = /* glsl */ `
   varying float vAlpha;
   void main() {
     gl_FragColor = vec4(uColor, 0.08 + vAlpha * 0.32);
+    #include <colorspace_fragment>
   }
 `;
 

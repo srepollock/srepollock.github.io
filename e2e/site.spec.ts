@@ -20,6 +20,9 @@ for (const route of routes) {
   test(`renders ${route.path}`, async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
+    page.on("console", (message) => {
+      if (message.text().includes("Shader Error") || message.text().includes("THREE.WebGLProgram")) errors.push(message.text().slice(0, 300));
+    });
     await page.goto(route.path);
     await hydrated(page);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(route.heading);
@@ -188,6 +191,8 @@ test.describe("free-fly", () => {
     await expect(page.locator("html")).toHaveAttribute("data-flying", "true");
     await expect(page.getByTestId("fly-hint")).toBeVisible();
     await expect(page.locator("#main")).toBeHidden();
+    const underPointer = await page.evaluate(() => document.elementFromPoint(window.innerWidth / 2, window.innerHeight * 0.6)?.tagName);
+    expect(underPointer).toBe("CANVAS");
     await page.keyboard.press("Escape");
     await expect(page.locator("html")).toHaveAttribute("data-flying", "false");
     await expect(page.locator("#main")).toBeVisible();

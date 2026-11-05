@@ -57,7 +57,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <CityBackdrop />
         <div className="city-scrim" aria-hidden="true" />
         <RainOverlay />
-        <div className="relative z-10 flex min-h-dvh flex-col">
+        <div className="site-shell relative z-10 flex min-h-dvh flex-col">
           <SiteHeader />
           <main id="main" className="flex-1">
             {children}

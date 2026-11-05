@@ -24,6 +24,7 @@ export function CameraRig({ district, animate, paused }: { district: DistrictId;
   const flight = useRef<Flight | null>(null);
   const first = useRef(true);
   const wasPaused = useRef(paused);
+  const sway = useRef(0);
 
   useLayoutEffect(() => {
     if (paused) {
@@ -46,6 +47,7 @@ export function CameraRig({ district, animate, paused }: { district: DistrictId;
         invalidate();
         return;
       }
+      sway.current = 0;
       flight.current = { from, to: destination, elapsed: 0, duration: flightDuration(from.position, destination.position) };
       setFlightStatus({ state: "flying", district });
       invalidate();
@@ -63,12 +65,12 @@ export function CameraRig({ district, animate, paused }: { district: DistrictId;
       invalidate();
       return;
     }
-    flight.current = {
-      from: current.current,
-      to: destination,
-      elapsed: 0,
-      duration: flightDuration(current.current.position, destination.position),
+    const from: Pose = {
+      position: [camera.position.x, camera.position.y, camera.position.z],
+      target: current.current.target,
     };
+    sway.current = 0;
+    flight.current = { from, to: destination, elapsed: 0, duration: flightDuration(from.position, destination.position) };
     setFlightStatus({ state: "flying", district });
     invalidate();
   }, [district, animate, paused, camera, invalidate, size.width]);
@@ -103,7 +105,13 @@ export function CameraRig({ district, animate, paused }: { district: DistrictId;
     if (!animate) return;
     const t = state.clock.elapsedTime;
     const base = current.current;
-    camera.position.set(base.position[0] + Math.sin(t * 0.11) * 2.2, base.position[1] + Math.sin(t * 0.17) * 0.8, base.position[2]);
+    sway.current = Math.min(1, sway.current + delta / 2);
+    const weight = sway.current * sway.current * (3 - 2 * sway.current);
+    camera.position.set(
+      base.position[0] + Math.sin(t * 0.11) * 2.2 * weight,
+      base.position[1] + Math.sin(t * 0.17) * 0.8 * weight,
+      base.position[2],
+    );
     camera.lookAt(lookTarget.set(...base.target));
   });
 

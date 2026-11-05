@@ -1,6 +1,6 @@
 "use client";
 
-import { useFrame, type ThreeEvent } from "@react-three/fiber";
+import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { DistrictId } from "@/lib/districts";
@@ -11,7 +11,12 @@ const FreeFly = lazy(() => import("./FreeFly"));
 const Extras3D = lazy(() => import("./Extras3D"));
 const Rain = lazy(() => import("./Rain3D"));
 const Traffic = lazy(() => import("./Traffic3D"));
+const Sim3D = lazy(() => import("./Sim3D"));
+const Bloom = lazy(() => import("./Bloom"));
 import { BLOCK, CITY_BOUNDS, STREET, WATERLINE_Z, generateCity, type CityLayout } from "./generate";
+import { massCity, type Massing } from "./massing";
+import { createGlowPoints } from "./glow";
+import { streetLightPositions } from "./streetLights";
 import type { ScenePalette } from "./palette";
 import {
   buildingFragment,
@@ -36,6 +41,9 @@ type SceneProps = {
   deployTarget: DistrictId | null;
   animate: boolean;
   flying: boolean;
+  streetCars: number;
+  pedestrians: number;
+  bloom: boolean;
   onLandmark: (district: DistrictId) => void;
   onRidge: () => void;
 };
@@ -66,6 +74,7 @@ function Sky({ palette }: { palette: ScenePalette }) {
       uHorizon: { value: new THREE.Color() },
       uSun: { value: new THREE.Color() },
       uSunDir: { value: SUN_DIR },
+      uBelow: { value: new THREE.Color() },
     }),
     [],
   );
@@ -74,6 +83,7 @@ function Sky({ palette }: { palette: ScenePalette }) {
     setColor(uniforms, "uMid", palette.skyMid);
     setColor(uniforms, "uHorizon", palette.skyHorizon);
     setColor(uniforms, "uSun", palette.sunGlow);
+    setColor(uniforms, "uBelow", palette.fog);
   }, [palette, uniforms]);
 
   return (
@@ -93,8 +103,8 @@ function Sky({ palette }: { palette: ScenePalette }) {
 function ridgeGeometry(z: number, base: number, amplitude: number, seed: number): THREE.BufferGeometry {
   const rng = mulberry32(seed);
   const phases = Array.from({ length: 4 }, () => rng() * Math.PI * 2);
-  const segments = 160;
-  const width = 1500;
+  const segments = 420;
+  const width = 4200;
   const positions: number[] = [];
   const indices: number[] = [];
   for (let i = 0; i <= segments; i++) {
@@ -145,6 +155,7 @@ function Ground({ palette }: { palette: ScenePalette }) {
       uStreet: { value: new THREE.Color() },
       uBlock: { value: BLOCK },
       uOrigin: { value: new THREE.Vector2(CITY_BOUNDS.minX, CITY_BOUNDS.minZ) },
+      uExtent: { value: new THREE.Vector2(CITY_BOUNDS.maxX - CITY_BOUNDS.minX, CITY_BOUNDS.maxZ - CITY_BOUNDS.minZ) },
       uStreetWidth: { value: STREET },
       uLit: { value: 1 },
     }),
@@ -158,10 +169,10 @@ function Ground({ palette }: { palette: ScenePalette }) {
     if (uniforms.uLit) uniforms.uLit.value = palette.windowsLit;
   }, [palette, uniforms]);
 
-  const depth = 200 - WATERLINE_Z;
+  const depth = 1400 - WATERLINE_Z;
   return (
     <mesh rotation-x={-Math.PI / 2} position={[0, 0, WATERLINE_Z + depth / 2]}>
-      <planeGeometry args={[900, depth]} />
+      <planeGeometry args={[3200, depth]} />
       <shaderMaterial vertexShader={groundVertex} fragmentShader={groundFragment} uniforms={uniforms} />
     </mesh>
   );
@@ -173,6 +184,8 @@ function Water({ palette, animate }: { palette: ScenePalette; animate: boolean }
       ...fogUniforms(palette),
       uWater: { value: new THREE.Color() },
       uGlint: { value: new THREE.Color() },
+      uSky: { value: new THREE.Color() },
+      uShore: { value: WATERLINE_Z },
       uTime: { value: 0 },
       uLit: { value: 1 },
     }),
@@ -183,6 +196,7 @@ function Water({ palette, animate }: { palette: ScenePalette; animate: boolean }
     applyFog(uniforms, palette);
     setColor(uniforms, "uWater", palette.water);
     setColor(uniforms, "uGlint", palette.waterGlint);
+    setColor(uniforms, "uSky", palette.skyMid);
     if (uniforms.uLit) uniforms.uLit.value = palette.windowsLit;
   }, [palette, uniforms]);
   useFrame((_, delta) => {
@@ -191,27 +205,30 @@ function Water({ palette, animate }: { palette: ScenePalette; animate: boolean }
   const depth = 400;
   return (
     <mesh rotation-x={-Math.PI / 2} position={[0, -0.4, WATERLINE_Z - depth / 2]}>
-      <planeGeometry args={[1600, depth]} />
+      <planeGeometry args={[3200, depth]} />
       <shaderMaterial vertexShader={groundVertex} fragmentShader={waterFragment} uniforms={uniforms} />
     </mesh>
   );
 }
 
-function Buildings({ layout, palette, animate }: { layout: CityLayout; palette: ScenePalette; animate: boolean }) {
+function Buildings({ massing, palette, animate }: { massing: Massing; palette: ScenePalette; animate: boolean }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
+  const { parts } = massing;
   const geometry = useMemo(() => {
     const box = new THREE.BoxGeometry(1, 1, 1);
     box.translate(0, 0.5, 0);
-    const seeds = new Float32Array(layout.buildings.map((b) => b.seed));
-    box.setAttribute("aSeed", new THREE.InstancedBufferAttribute(seeds, 1));
+    box.setAttribute("aSeed", new THREE.InstancedBufferAttribute(Float32Array.from(parts, (p) => p.seed), 1));
+    box.setAttribute("aStyle", new THREE.InstancedBufferAttribute(Float32Array.from(parts, (p) => p.style), 1));
     return box;
-  }, [layout]);
+  }, [parts]);
   const uniforms = useMemo<Uniforms>(
     () => ({
       ...fogUniforms(palette),
       uFacade: { value: new THREE.Color() },
       uFacadeTop: { value: new THREE.Color() },
       uWindow: { value: new THREE.Color() },
+      uSkyTop: { value: new THREE.Color() },
+      uSkyHorizon: { value: new THREE.Color() },
       uLit: { value: 1 },
       uAmbient: { value: 0.4 },
       uTime: { value: 0 },
@@ -225,6 +242,8 @@ function Buildings({ layout, palette, animate }: { layout: CityLayout; palette: 
     setColor(uniforms, "uFacade", palette.facade);
     setColor(uniforms, "uFacadeTop", palette.facadeTop);
     setColor(uniforms, "uWindow", palette.window);
+    setColor(uniforms, "uSkyTop", palette.skyTop);
+    setColor(uniforms, "uSkyHorizon", palette.skyMid);
     if (uniforms.uLit) uniforms.uLit.value = palette.windowsLit;
     if (uniforms.uAmbient) uniforms.uAmbient.value = palette.ambient;
   }, [palette, uniforms]);
@@ -233,13 +252,13 @@ function Buildings({ layout, palette, animate }: { layout: CityLayout; palette: 
     const target = mesh.current;
     if (!target) return;
     const matrix = new THREE.Matrix4();
-    layout.buildings.forEach((b, i) => {
-      matrix.makeScale(b.width, b.height, b.depth).setPosition(b.x, 0, b.z);
+    parts.forEach((part, i) => {
+      matrix.makeScale(part.width, part.height, part.depth).setPosition(part.x, part.y0, part.z);
       target.setMatrixAt(i, matrix);
     });
     target.instanceMatrix.needsUpdate = true;
     target.computeBoundingSphere();
-  }, [layout]);
+  }, [parts]);
 
   useEffect(() => () => geometry.dispose(), [geometry]);
 
@@ -248,27 +267,96 @@ function Buildings({ layout, palette, animate }: { layout: CityLayout; palette: 
   });
 
   return (
-    <instancedMesh ref={mesh} args={[geometry, undefined, layout.buildings.length]} frustumCulled={false}>
+    <instancedMesh ref={mesh} args={[geometry, undefined, parts.length]} frustumCulled={false}>
       <shaderMaterial vertexShader={buildingVertex} fragmentShader={buildingFragment} uniforms={uniforms} />
     </instancedMesh>
   );
 }
 
-function NeonTrim({ layout, palette }: { layout: CityLayout; palette: ScenePalette }) {
+function RoofDetails({ massing, palette, animate }: { massing: Massing; palette: ScenePalette; animate: boolean }) {
+  const units = useRef<THREE.InstancedMesh>(null);
+  const lights = useRef<THREE.InstancedMesh>(null);
+  const lightMaterial = useRef<THREE.MeshBasicMaterial>(null);
+  useLayoutEffect(() => {
+    const matrix = new THREE.Matrix4();
+    massing.roofUnits.forEach((u, i) => {
+      matrix.makeScale(u.width, u.height, u.depth).setPosition(u.x, u.y + u.height / 2, u.z);
+      units.current?.setMatrixAt(i, matrix);
+    });
+    massing.aviationLights.forEach((l, i) => {
+      matrix.makeScale(0.35, 0.35, 0.35).setPosition(l.x, l.y, l.z);
+      lights.current?.setMatrixAt(i, matrix);
+    });
+    if (units.current) units.current.instanceMatrix.needsUpdate = true;
+    if (lights.current) lights.current.instanceMatrix.needsUpdate = true;
+  }, [massing]);
+  useFrame(({ clock }) => {
+    if (!lightMaterial.current) return;
+    const on = !animate || Math.sin(clock.elapsedTime * 2.1) > 0.2;
+    lightMaterial.current.color.set(on ? palette.beacon : palette.facade);
+  });
+  return (
+    <>
+      <instancedMesh ref={units} args={[undefined, undefined, massing.roofUnits.length]} frustumCulled={false}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshBasicMaterial color={palette.facadeTop} />
+      </instancedMesh>
+      <instancedMesh ref={lights} args={[undefined, undefined, massing.aviationLights.length]} frustumCulled={false}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshBasicMaterial ref={lightMaterial} color={palette.beacon} toneMapped={false} />
+      </instancedMesh>
+    </>
+  );
+}
+
+function StreetLights({ palette }: { palette: ScenePalette }) {
+  const size = useThree((state) => state.size);
+  const camera = useThree((state) => state.camera) as THREE.PerspectiveCamera;
+  const glow = useMemo(() => {
+    const positions = streetLightPositions();
+    const created = createGlowPoints(positions.length / 3, 1.2);
+    created.positions.set(positions);
+    return created;
+  }, []);
+  useLayoutEffect(() => {
+    const color = new THREE.Color(palette.street);
+    for (let i = 0; i < glow.colors.length; i += 3) {
+      glow.colors[i] = color.r;
+      glow.colors[i + 1] = color.g;
+      glow.colors[i + 2] = color.b;
+    }
+    glow.points.geometry.getAttribute("color").needsUpdate = true;
+    glow.material.uniforms.uIntensity.value = palette.windowsLit * 0.75;
+    glow.material.uniforms.uFogDensity.value = palette.fogDensity;
+    glow.points.visible = palette.windowsLit > 0;
+  }, [palette, glow]);
+  useLayoutEffect(() => {
+    glow.material.uniforms.uScale.value = (size.height * 1.5) / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
+  }, [size.height, camera.fov, glow]);
+  useEffect(
+    () => () => {
+      glow.points.geometry.dispose();
+      glow.material.dispose();
+    },
+    [glow],
+  );
+  return <primitive object={glow.points} />;
+}
+
+function NeonTrim({ massing, palette }: { massing: Massing; palette: ScenePalette }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
-  const lit = useMemo(() => layout.buildings.filter((b) => b.neon), [layout]);
   useLayoutEffect(() => {
     const target = mesh.current;
     if (!target) return;
     const matrix = new THREE.Matrix4();
-    lit.forEach((b, i) => {
-      matrix.makeScale(b.width + 0.12, 0.28, b.depth + 0.12).setPosition(b.x, b.height - 0.9, b.z);
+    massing.neonTrims.forEach((t, i) => {
+      matrix.makeScale(t.width, 0.28, t.depth).setPosition(t.x, t.y, t.z);
       target.setMatrixAt(i, matrix);
     });
     target.instanceMatrix.needsUpdate = true;
-  }, [lit]);
+  }, [massing]);
   return (
-    <instancedMesh ref={mesh} args={[undefined, undefined, lit.length]} frustumCulled={false}>
+    <instancedMesh ref={mesh} args={[undefined, undefined, massing.neonTrims.length]} frustumCulled={false}>
       <boxGeometry args={[1, 1, 1]} />
       <meshBasicMaterial color={palette.neon} toneMapped={false} />
     </instancedMesh>
@@ -346,10 +434,14 @@ export function Scene({
   deployTarget,
   animate,
   flying,
+  streetCars,
+  pedestrians,
+  bloom,
   onLandmark,
   onRidge,
 }: SceneProps) {
   const layout = useMemo(() => generateCity(CITY_SEED, density), [density]);
+  const massing = useMemo(() => massCity(layout.buildings, CITY_SEED + 1), [layout]);
   return (
     <>
       <fogExp2 attach="fog" args={[palette.fog, palette.fogDensity]} />
@@ -368,12 +460,20 @@ export function Scene({
       />
       <Water palette={palette} animate={animate} />
       <Ground palette={palette} />
-      <Buildings layout={layout} palette={palette} animate={animate} />
-      <NeonTrim layout={layout} palette={palette} />
+      <Buildings massing={massing} palette={palette} animate={animate} />
+      <RoofDetails massing={massing} palette={palette} animate={animate} />
+      <NeonTrim massing={massing} palette={palette} />
+      <StreetLights palette={palette} />
       <Landmarks layout={layout} palette={palette} animate={animate} onSelect={flying ? onLandmark : undefined} />
       <Suspense fallback={null}>
         <Traffic palette={palette} total={trafficCars} deployTarget={deployTarget} animate={animate} />
+        <Sim3D palette={palette} cars={streetCars} pedestrians={Math.max(pedestrians, 1)} showPedestrians={pedestrians > 0} animate={animate} />
       </Suspense>
+      {bloom && (
+        <Suspense fallback={null}>
+          <Bloom strength={palette.windowsLit > 0 ? 0.75 : 0.3} threshold={palette.windowsLit > 0 ? 0.66 : 0.88} />
+        </Suspense>
+      )}
       {rain && (
         <Suspense fallback={null}>
           <Rain palette={palette} drops={rainDrops} animate={animate} />
