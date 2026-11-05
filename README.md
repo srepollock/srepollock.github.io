@@ -41,6 +41,13 @@ Press ⌘K / Ctrl+K, or the `>_ shell` button. Run `help` for the command list. 
 functions that return output lines plus effects (navigate, change settings, clear, close), so they're
 unit-tested without a browser. The shell's code loads on first open.
 
+## Free-fly
+
+Press `F`, use the plane button in the header, or run `fly` in the shell. WASD or the arrow keys
+move, drag looks around, E/Q climb and descend, Shift boosts, and Esc lands. Clicking a district's
+beacon lands you there. Touch devices get an on-screen pad. The free-fly camera, the 3D extras, the
+rain and the traffic each load as separate chunks after the city.
+
 ## Degradation
 
 Content renders as static HTML first. The 3D chunk is lazy-loaded after hydration.

@@ -160,3 +160,78 @@ test.describe("terminal", () => {
     await expect(opener).toBeFocused();
   });
 });
+
+test.describe("free-fly", () => {
+  test("F takes the controls, hides the content, and Esc lands", async ({ page }) => {
+    await page.goto("/");
+    const flyButton = page.getByRole("button", { name: /Free-fly the city/ });
+    await expect(flyButton).toBeVisible();
+    await page.locator("body").press("f");
+    await expect(page.locator("html")).toHaveAttribute("data-flying", "true");
+    await expect(page.getByTestId("fly-hint")).toBeVisible();
+    await expect(page.locator("#main")).toBeHidden();
+    await page.keyboard.press("Escape");
+    await expect(page.locator("html")).toHaveAttribute("data-flying", "false");
+    await expect(page.locator("#main")).toBeVisible();
+  });
+
+  test("the shell can start a flight and the header button lands it", async ({ page }) => {
+    await page.goto("/about/");
+    await expect(page.getByRole("button", { name: /Free-fly the city/ })).toBeVisible();
+    await page.keyboard.press("Control+k");
+    const input = page.getByTestId("terminal").getByRole("textbox", { name: /command/ });
+    await input.fill("fly");
+    await input.press("Enter");
+    await expect(page.locator("html")).toHaveAttribute("data-flying", "true");
+    await page.getByRole("button", { name: /Land/ }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-flying", "false");
+  });
+
+  test("is unavailable without WebGL", async ({ page }) => {
+    await page.addInitScript(() => {
+      const original = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, type: string, ...rest: unknown[]) {
+        if (type.startsWith("webgl")) return null;
+        return (original as (...args: unknown[]) => unknown).call(this, type, ...rest);
+      } as typeof HTMLCanvasElement.prototype.getContext;
+    });
+    await page.goto("/");
+    await expect(page.getByTestId("city-notice")).toBeVisible();
+    await expect(page.getByRole("button", { name: /Free-fly the city/ })).toHaveCount(0);
+    await page.locator("body").press("f");
+    await expect(page.locator("html")).not.toHaveAttribute("data-flying", "true");
+  });
+});
+
+test.describe("easter eggs", () => {
+  test("the Konami code blows the whistle", async ({ page }) => {
+    await page.goto("/");
+    for (const key of ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"]) {
+      await page.keyboard.press(key);
+    }
+    await expect(page.getByTestId("toast")).toContainText("🥍");
+  });
+
+  test("the shell makes sandwiches, eventually", async ({ page }) => {
+    await page.goto("/");
+    await page.keyboard.press("Control+k");
+    const terminal = page.getByTestId("terminal");
+    const input = terminal.getByRole("textbox", { name: /command/ });
+    await input.fill("make me a sandwich");
+    await input.press("Enter");
+    await expect(terminal).toContainText("Make it yourself.");
+    await input.fill("sudo make me a sandwich");
+    await input.press("Enter");
+    await expect(terminal).toContainText("Okay. 🥪");
+  });
+
+  test("shred sends a snowboarder down the ridge", async ({ page }) => {
+    await page.goto("/work/");
+    await page.keyboard.press("Control+k");
+    const input = page.getByTestId("terminal").getByRole("textbox", { name: /command/ });
+    await input.fill("shred");
+    await input.press("Enter");
+    await expect(page).toHaveURL(/\/$/);
+    await expect(page.getByTestId("toast")).toContainText("Fresh tracks");
+  });
+});

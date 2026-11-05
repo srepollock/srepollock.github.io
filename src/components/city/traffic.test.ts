@@ -80,3 +80,18 @@ describe("flight lanes", () => {
     expect(new Set(altitudes).size).toBeGreaterThan(3);
   });
 });
+
+describe("git blame tower", () => {
+  it("sits in the park, clear of every street line and building", async () => {
+    const { BLAME_TOWER } = await import("./Extras3D");
+    const half = 2.2;
+    const { buildings } = generateCity(604, 1);
+    for (const b of buildings) {
+      const overlap = Math.abs(b.x - BLAME_TOWER.x) < b.width / 2 + half && Math.abs(b.z - BLAME_TOWER.z) < b.depth / 2 + half;
+      expect(overlap).toBe(false);
+    }
+    const distanceToLine = (v: number, origin: number) => Math.abs(v - (origin + Math.round((v - origin) / BLOCK) * BLOCK));
+    expect(distanceToLine(BLAME_TOWER.x, CITY_BOUNDS.minX)).toBeGreaterThan(half + 2);
+    expect(distanceToLine(BLAME_TOWER.z, CITY_BOUNDS.minZ)).toBeGreaterThan(half + 2);
+  });
+});
