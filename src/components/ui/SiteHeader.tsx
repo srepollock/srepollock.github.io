@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { districtForPath, districts, navOrder } from "@/lib/districts";
+import { setCityStatus } from "@/lib/cityStatus";
 import { updateSettings, useSettings } from "@/lib/settings";
 import { toggleTerminal, useTerminalOpen } from "@/lib/terminalStore";
 
@@ -117,7 +118,10 @@ export function SiteHeader() {
               {settings.rain && <path d="M9 18l-1 3M13 18l-1 3M17 18l-1 3" />}
             </svg>
           </Toggle>
-          <Toggle label={settings.city ? "Turn the city off" : "Turn the city on"} pressed={settings.city} onClick={() => updateSettings({ city: !settings.city })}>
+          <Toggle label={settings.city ? "Turn the city off" : "Turn the city on"} pressed={settings.city} onClick={() => {
+              if (!settings.city) setCityStatus({ state: "pending" });
+              updateSettings({ city: !settings.city });
+            }}>
             <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
               <path d="M3 21h18M5 21V10h4v11M10 21V4h5v17M16 21v-8h3v8" />
               {!settings.city && <path d="M3 3l18 18" />}

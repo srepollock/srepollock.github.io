@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { districtForPath } from "@/lib/districts";
+import { setCityStatus } from "@/lib/cityStatus";
 import { updateSettings, useSettings } from "@/lib/settings";
 import { commonPrefix, complete, runCommand, type Effect, type Line } from "@/lib/terminal";
 import { closeTerminal } from "@/lib/terminalStore";
@@ -60,6 +61,7 @@ export default function Terminal() {
             window.location.assign(effect.href);
             break;
           case "settings":
+            if (effect.patch.city === true) setCityStatus({ state: "pending" });
             updateSettings(effect.patch);
             break;
           case "clear":
