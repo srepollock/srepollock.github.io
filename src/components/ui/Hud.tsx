@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { districtForPath, districts } from "@/lib/districts";
+import { useCityStatus } from "@/lib/cityStatus";
 import { useFlightStatus } from "@/lib/flightStatus";
 import { useSettings } from "@/lib/settings";
 
@@ -11,6 +12,8 @@ export function Hud() {
   const flight = useFlightStatus();
   const district = districts[districtForPath(pathname)];
   const flying = flight.state === "flying";
+  const city = useCityStatus();
+  const health = !settings.city ? "city off" : city.state === "ok" || city.state === "pending" ? "healthy" : "static";
 
   return (
     <div
@@ -18,7 +21,7 @@ export function Hud() {
       aria-hidden="true"
     >
       <span className={flying ? "text-amber" : "text-accent"}>●</span>{" "}
-      {flying ? `build ✓ · test ✓ · deploy → ${district.id}` : `${district.id} · healthy`} · 49.32°N 123.07°W ·{" "}
+      {flying ? `build ✓ · test ✓ · deploy → ${district.id}` : `${district.id} · ${health}`} · 49.32°N 123.07°W ·{" "}
       {settings.theme === "dark" ? "dusk" : "overcast"}
       {settings.rain ? " · 100% chance of rain" : ""}
     </div>

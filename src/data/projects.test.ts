@@ -36,3 +36,14 @@ describe("projects data", () => {
     }
   });
 });
+
+describe("Developer Box listing", () => {
+  it.each(["caravan", "recipe-retriever", "quickbooks-vendor-payments", "developer-box-website"])(
+    "%s links to its developerbox.ca project page",
+    (slug) => {
+      const project = projects.find((p) => p.slug === slug);
+      expect(project?.kind).toBe("devbox");
+      if (project) expect(projectHref(project)).toBe(`https://developerbox.ca/projects/${slug}/`);
+    },
+  );
+});

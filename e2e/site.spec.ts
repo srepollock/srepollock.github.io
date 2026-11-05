@@ -51,6 +51,7 @@ test("project filters narrow the grid", async ({ page }) => {
 test("city toggle persists and removes the canvas", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByTestId("city-canvas")).toBeAttached();
+  await expect(page.getByTestId("city-notice")).toHaveCount(0);
   await page.getByRole("button", { name: "Turn the city off" }).click();
   await expect(page.getByTestId("city-canvas")).toHaveCount(0);
   await expect(page.getByTestId("skyline-fallback")).toBeVisible();
@@ -80,10 +81,16 @@ test.describe("without WebGL", () => {
     });
   });
 
-  test("falls back to the static skyline and stays usable", async ({ page }) => {
+  test("explains the static skyline, rains in CSS, and stays usable", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByTestId("skyline-fallback")).toBeVisible();
     await expect(page.getByTestId("city-canvas")).toHaveCount(0);
+    await expect(page.getByTestId("city-notice")).toContainText("isn't providing WebGL");
+    await expect(page.getByTestId("css-rain")).toHaveCount(0);
+    await page.getByRole("button", { name: /Make it rain/ }).click();
+    await expect(page.getByTestId("css-rain")).toBeAttached();
+    await page.getByTestId("city-notice").getByRole("button", { name: "dismiss" }).click();
+    await expect(page.getByTestId("city-notice")).toHaveCount(0);
     await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Work" }).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Where I've shipped");
   });

@@ -106,20 +106,6 @@ export const projects: readonly Project[] = [
   },
   {
     kind: "personal",
-    slug: "recipe-retriever",
-    title: "Recipe Retriever",
-    pitch: "An AI cookbook that pulls recipes out of links, photos and whatever's left in the fridge.",
-    summary: [
-      "Extracts structured recipes from blogs and video links, remixes them for dietary needs, scales servings, and turns a meal plan into a grocery list.",
-      "Generative flows on Firebase, Stripe subscriptions, four languages, and end-to-end tests that mock the AI layer so CI stays deterministic.",
-    ],
-    stack: ["Next.js", "TypeScript", "Firebase", "Genkit", "Stripe", "Playwright"],
-    status: "active",
-    years: "2025 – 2026",
-    visibility: "closed",
-  },
-  {
-    kind: "personal",
     slug: "hearthwild",
     title: "Hearthwild",
     pitch: "A cozy survival and base-building slice, built to prove the art direction before a Godot port.",
@@ -145,6 +131,20 @@ export const projects: readonly Project[] = [
     years: "2026",
     devboxPageLive: false,
     featured: true,
+  },
+  {
+    kind: "devbox",
+    slug: "recipe-retriever",
+    title: "Recipe Retriever",
+    pitch: "An AI cookbook that pulls recipes out of links, photos and whatever's left in the fridge.",
+    summary: [
+      "Extracts structured recipes from blogs and video links, remixes them for dietary needs, scales servings, and turns a meal plan into a grocery list.",
+      "Generative flows on Firebase, Stripe subscriptions, four languages, and end-to-end tests that mock the AI layer so CI stays deterministic.",
+    ],
+    stack: ["Next.js", "TypeScript", "Firebase", "Genkit", "Stripe", "Playwright"],
+    status: "active",
+    years: "2025 – 2026",
+    devboxPageLive: false,
   },
   {
     kind: "devbox",

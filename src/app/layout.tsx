@@ -3,7 +3,9 @@ import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import type { ReactNode } from "react";
 import { CityBackdrop } from "@/components/city/CityBackdrop";
 import { SkylineFallback } from "@/components/city/SkylineFallback";
+import { CityNotice } from "@/components/ui/CityNotice";
 import { Hud } from "@/components/ui/Hud";
+import { RainOverlay } from "@/components/ui/RainOverlay";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 import { SiteHeader } from "@/components/ui/SiteHeader";
 import { TerminalHost } from "@/components/ui/TerminalHost";
@@ -53,6 +55,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <SkylineFallback />
         <CityBackdrop />
         <div className="city-scrim" aria-hidden="true" />
+        <RainOverlay />
         <div className="relative z-10 flex min-h-dvh flex-col">
           <SiteHeader />
           <main id="main" className="flex-1">
@@ -61,6 +64,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <SiteFooter />
         </div>
         <Hud />
+        <CityNotice />
         <TerminalHost />
       </body>
     </html>

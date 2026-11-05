@@ -8,6 +8,7 @@ spollock.ca links each Developer Box project to `https://developerbox.ca/project
 | Slug | Title |
 |---|---|
 | `caravan` | Caravan |
+| `recipe-retriever` | Recipe Retriever |
 | `quickbooks-vendor-payments` | QuickBooks vendor payments |
 | `developer-box-website` | Developer Box website |
 

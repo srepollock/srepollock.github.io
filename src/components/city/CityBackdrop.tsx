@@ -2,10 +2,12 @@
 
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+import { setCityStatus, useCityStatus } from "@/lib/cityStatus";
 import { districtForPath } from "@/lib/districts";
 import { detectTier, qualityProfile, type QualityProfile } from "@/lib/quality";
 import { useSettings } from "@/lib/settings";
+import { CityErrorBoundary } from "./CityErrorBoundary";
 
 const CityCanvas = dynamic(() => import("./CityCanvas"), { ssr: false });
 
@@ -16,7 +18,9 @@ let cachedEnvironment: Environment | null = null;
 function supportsWebGL(): boolean {
   try {
     const canvas = document.createElement("canvas");
-    return Boolean(canvas.getContext("webgl2") ?? canvas.getContext("webgl"));
+    const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
+    gl?.getExtension("WEBGL_lose_context")?.loseContext();
+    return gl !== null;
   } catch {
     return false;
   }
@@ -54,18 +58,25 @@ export function CityBackdrop() {
   const pathname = usePathname();
   const settings = useSettings();
   const environment = useSyncExternalStore(subscribeMotion, readEnvironment, () => null);
+  const status = useCityStatus();
 
-  if (!environment || !environment.webgl || !settings.city) return null;
+  useEffect(() => {
+    if (environment && !environment.webgl) setCityStatus({ state: "unsupported" });
+  }, [environment]);
+
+  if (!environment || !environment.webgl || !settings.city || status.state === "failed") return null;
 
   return (
     <div className="city-layer" data-testid="city-canvas">
-      <CityCanvas
-        district={districtForPath(pathname)}
-        theme={settings.theme}
-        rain={settings.rain}
-        quality={environment.quality}
-        reducedMotion={environment.reducedMotion}
-      />
+      <CityErrorBoundary>
+        <CityCanvas
+          district={districtForPath(pathname)}
+          theme={settings.theme}
+          rain={settings.rain}
+          quality={environment.quality}
+          reducedMotion={environment.reducedMotion}
+        />
+      </CityErrorBoundary>
     </div>
   );
 }
