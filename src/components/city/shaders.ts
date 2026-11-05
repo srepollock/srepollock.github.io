@@ -122,12 +122,13 @@ export const groundFragment = /* glsl */ `
   uniform vec3 uStreet;
   uniform float uBlock;
   uniform float uStreetWidth;
+  uniform vec2 uOrigin;
   uniform float uLit;
   varying vec3 vWorld;
   varying float vDist;
   ${fogChunk}
   void main() {
-    vec2 g = mod(vWorld.xz + 140.0, uBlock);
+    vec2 g = mod(vWorld.xz - uOrigin + uStreetWidth * 0.5, uBlock);
     float street = 1.0 - step(uStreetWidth, min(g.x, g.y));
     float centre = street * (1.0 - smoothstep(0.0, 0.18, abs(min(g.x, g.y) - uStreetWidth * 0.5)));
     vec3 col = uGround;

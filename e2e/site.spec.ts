@@ -108,3 +108,48 @@ test("reduced motion still renders the city and navigates without errors", async
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hi, I'm Spencer.");
   expect(errors).toEqual([]);
 });
+
+test.describe("terminal", () => {
+  test("opens with Ctrl+K, navigates with cd and closes", async ({ page }) => {
+    await page.goto("/");
+    await page.keyboard.press("Control+k");
+    const terminal = page.getByTestId("terminal");
+    await expect(terminal).toBeVisible();
+    const input = terminal.getByRole("textbox", { name: /command/ });
+    await expect(input).toBeFocused();
+    await input.fill("cd projects");
+    await input.press("Enter");
+    await expect(page).toHaveURL(/\/projects\/$/);
+    await expect(terminal).toHaveCount(0);
+  });
+
+  test("runs commands, completes with Tab and recalls history", async ({ page }) => {
+    await page.goto("/about/");
+    await page.getByRole("button", { name: /Open the shell/ }).first().click();
+    const terminal = page.getByTestId("terminal");
+    const input = terminal.getByRole("textbox", { name: /command/ });
+    await input.fill("whoa");
+    await input.press("Tab");
+    await expect(input).toHaveValue("whoami ");
+    await input.press("Enter");
+    await expect(terminal).toContainText("Founder, Developer Box Inc.");
+    await input.fill("theme light");
+    await input.press("Enter");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await input.press("ArrowUp");
+    await expect(input).toHaveValue("theme light");
+    await input.fill("nope");
+    await input.press("Enter");
+    await expect(terminal).toContainText("command not found: nope");
+  });
+
+  test("Escape closes it and returns focus", async ({ page }) => {
+    await page.goto("/");
+    const opener = page.getByRole("button", { name: /Open the shell/ }).first();
+    await opener.click();
+    await expect(page.getByTestId("terminal")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByTestId("terminal")).toHaveCount(0);
+    await expect(opener).toBeFocused();
+  });
+});

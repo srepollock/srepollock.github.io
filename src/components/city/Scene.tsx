@@ -6,7 +6,8 @@ import * as THREE from "three";
 import type { DistrictId } from "@/lib/districts";
 import { mulberry32 } from "@/lib/random";
 import { CameraRig } from "./CameraRig";
-import { BLOCK, STREET, WATERLINE_Z, generateCity, type CityLayout } from "./generate";
+import { BLOCK, CITY_BOUNDS, STREET, WATERLINE_Z, generateCity, type CityLayout } from "./generate";
+import { buildRoutes, headsTo, pointAt, spawnCars } from "./traffic";
 import type { ScenePalette } from "./palette";
 import {
   buildingFragment,
@@ -29,6 +30,8 @@ type SceneProps = {
   density: number;
   rain: boolean;
   rainDrops: number;
+  trafficCars: number;
+  deployTarget: DistrictId | null;
   animate: boolean;
 };
 
@@ -136,6 +139,7 @@ function Ground({ palette }: { palette: ScenePalette }) {
       uGround: { value: new THREE.Color() },
       uStreet: { value: new THREE.Color() },
       uBlock: { value: BLOCK },
+      uOrigin: { value: new THREE.Vector2(CITY_BOUNDS.minX, CITY_BOUNDS.minZ) },
       uStreetWidth: { value: STREET },
       uLit: { value: 1 },
     }),
@@ -337,10 +341,60 @@ function Rain({ palette, drops, animate }: { palette: ScenePalette; drops: numbe
   );
 }
 
-export function Scene({ district, palette, density, rain, rainDrops, animate }: SceneProps) {
+const WHITE = new THREE.Color("#ffffff");
+
+function Traffic({
+  palette,
+  total,
+  deployTarget,
+  animate,
+}: {
+  palette: ScenePalette;
+  total: number;
+  deployTarget: DistrictId | null;
+  animate: boolean;
+}) {
+  const mesh = useRef<THREE.InstancedMesh>(null);
+  const routes = useMemo(() => buildRoutes(), []);
+  const cars = useMemo(() => spawnCars(routes, total, 31), [routes, total]);
+  const travelled = useMemo(() => Float32Array.from(cars, (car) => car.offset), [cars]);
+  const scratch = useMemo(() => ({ matrix: new THREE.Matrix4(), color: new THREE.Color() }), []);
+
+  useFrame((_, delta) => {
+    const target = mesh.current;
+    if (!target) return;
+    const step = animate ? Math.min(delta, 0.1) : 0;
+    cars.forEach((car, i) => {
+      const route = routes[car.route];
+      if (!route) return;
+      const surging = deployTarget !== null && headsTo(route, car.outbound, deployTarget);
+      travelled[i] = (travelled[i] ?? 0) + step * car.speed * (surging ? 3.2 : 1);
+      const pose = pointAt(route, travelled[i] ?? 0, !car.outbound);
+      const x = pose.x + (pose.alongX ? 0 : car.lane);
+      const z = pose.z + (pose.alongX ? car.lane : 0);
+      scratch.matrix.makeScale(pose.alongX ? 4.2 : 0.6, 0.3, pose.alongX ? 0.6 : 4.2).setPosition(x, route.altitude, z);
+      target.setMatrixAt(i, scratch.matrix);
+      scratch.color.set(car.outbound ? palette.neon : palette.window);
+      if (surging) scratch.color.lerp(WHITE, 0.55);
+      target.setColorAt(i, scratch.color);
+    });
+    target.instanceMatrix.needsUpdate = true;
+    if (target.instanceColor) target.instanceColor.needsUpdate = true;
+  });
+
+  return (
+    <instancedMesh ref={mesh} args={[undefined, undefined, cars.length]} frustumCulled={false}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshBasicMaterial toneMapped={false} />
+    </instancedMesh>
+  );
+}
+
+export function Scene({ district, palette, density, rain, rainDrops, trafficCars, deployTarget, animate }: SceneProps) {
   const layout = useMemo(() => generateCity(CITY_SEED, density), [density]);
   return (
     <>
+      <fogExp2 attach="fog" args={[palette.fog, palette.fogDensity]} />
       <Sky palette={palette} />
       <Mountains palette={palette} />
       <Water palette={palette} animate={animate} />
@@ -348,6 +402,7 @@ export function Scene({ district, palette, density, rain, rainDrops, animate }: 
       <Buildings layout={layout} palette={palette} animate={animate} />
       <NeonTrim layout={layout} palette={palette} />
       <Landmarks layout={layout} palette={palette} animate={animate} />
+      <Traffic palette={palette} total={trafficCars} deployTarget={deployTarget} animate={animate} />
       {rain && <Rain palette={palette} drops={rainDrops} animate={animate} />}
       <CameraRig district={district} animate={animate} />
     </>

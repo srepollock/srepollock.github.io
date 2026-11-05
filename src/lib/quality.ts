@@ -22,10 +22,11 @@ export type QualityProfile = {
   density: number;
   fpsCap: number | null;
   rainDrops: number;
+  trafficCars: number;
 };
 
 export function qualityProfile(tier: QualityTier): QualityProfile {
   return tier === "high"
-    ? { tier, dpr: [1, 2], density: 1, fpsCap: null, rainDrops: 2200 }
-    : { tier, dpr: [1, 1.5], density: 0.55, fpsCap: 30, rainDrops: 700 };
+    ? { tier, dpr: [1, 2], density: 1, fpsCap: null, rainDrops: 2200, trafficCars: 260 }
+    : { tier, dpr: [1, 1.5], density: 0.55, fpsCap: 30, rainDrops: 700, trafficCars: 110 };
 }

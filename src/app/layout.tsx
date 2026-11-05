@@ -6,6 +6,7 @@ import { SkylineFallback } from "@/components/city/SkylineFallback";
 import { Hud } from "@/components/ui/Hud";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 import { SiteHeader } from "@/components/ui/SiteHeader";
+import { TerminalHost } from "@/components/ui/TerminalHost";
 import { site } from "@/data/site";
 import { themeInitScript } from "@/lib/settings";
 import "./globals.css";
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <SiteFooter />
         </div>
         <Hud />
+        <TerminalHost />
       </body>
     </html>
   );
