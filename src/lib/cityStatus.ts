@@ -5,7 +5,7 @@ import { useSyncExternalStore } from "react";
 export type CityStatus =
   | { state: "pending" }
   | { state: "ok" }
-  | { state: "unsupported" }
+  | { state: "unsupported"; detail: string | null }
   | { state: "failed"; reason: string };
 
 const pending: CityStatus = { state: "pending" };
