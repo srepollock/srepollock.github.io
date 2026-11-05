@@ -1,21 +1,45 @@
 {
-  "name": "tender-telescope",
+  "name": "spollock-ca",
+  "version": "2.0.0",
+  "private": true,
   "type": "module",
-  "version": "0.0.1",
+  "packageManager": "yarn@4.18.1",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "serve out",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.3",
-    "@fontsource-variable/fraunces": "^5.2.9",
-    "@fontsource-variable/jetbrains-mono": "^5.2.8",
-    "@fontsource/ibm-plex-sans": "^5.2.8",
-    "astro": "^6.1.8"
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "16.4.5",
+    "@react-three/fiber": "9.8.2",
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "three": "0.187.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.4",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.187.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.5",
+    "serve": "^14.2.6",
+    "tailwindcss": "4.3.4",
+    "typescript": "5.9.3",
+    "vite": "^8.3.5",
+    "vitest": "^5.1.0"
   }
 }

@@ -1,0 +1,85 @@
+"use client";
+
+import { useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useLayoutEffect, useRef } from "react";
+import * as THREE from "three";
+import { districts, type DistrictId } from "@/lib/districts";
+import { setFlightStatus } from "@/lib/flightStatus";
+import { flightDuration, poseAt, type Pose } from "./flight";
+
+type Flight = { from: Pose; to: Pose; elapsed: number; duration: number };
+
+const lookTarget = new THREE.Vector3();
+
+function framingOffset(district: DistrictId, width: number): number {
+  if (district === "skyline" || width < 1024) return 0;
+  return -7;
+}
+
+export function CameraRig({ district, animate }: { district: DistrictId; animate: boolean }) {
+  const camera = useThree((state) => state.camera) as THREE.PerspectiveCamera;
+  const size = useThree((state) => state.size);
+  const invalidate = useThree((state) => state.invalidate);
+  const current = useRef<Pose>(districts[district].camera);
+  const flight = useRef<Flight | null>(null);
+  const first = useRef(true);
+
+  useLayoutEffect(() => {
+    const destination = districts[district].camera;
+    if (first.current || !animate) {
+      first.current = false;
+      flight.current = null;
+      current.current = destination;
+      camera.position.set(...destination.position);
+      camera.lookAt(lookTarget.set(...destination.target));
+      camera.filmOffset = framingOffset(district, size.width);
+      camera.updateProjectionMatrix();
+      setFlightStatus({ state: "idle", district });
+      invalidate();
+      return;
+    }
+    flight.current = {
+      from: current.current,
+      to: destination,
+      elapsed: 0,
+      duration: flightDuration(current.current.position, destination.position),
+    };
+    setFlightStatus({ state: "flying", district });
+    invalidate();
+  }, [district, animate, camera, invalidate, size.width]);
+
+  useEffect(() => () => setFlightStatus({ state: "idle", district: null }), []);
+
+  useFrame((state, delta) => {
+    const active = flight.current;
+    const goalOffset = framingOffset(district, size.width);
+    if (Math.abs(camera.filmOffset - goalOffset) > 0.01) {
+      camera.filmOffset += (goalOffset - camera.filmOffset) * Math.min(1, delta * 2.5);
+      camera.updateProjectionMatrix();
+    }
+
+    if (active) {
+      active.elapsed += Math.min(delta, 0.1);
+      const progress = active.elapsed / active.duration;
+      const pose = poseAt(active.from, active.to, progress);
+      current.current = pose;
+      camera.position.set(...pose.position);
+      camera.lookAt(lookTarget.set(...pose.target));
+      if (progress >= 1) {
+        flight.current = null;
+        current.current = active.to;
+        setFlightStatus({ state: "idle", district });
+      }
+      invalidate();
+      return;
+    }
+
+    if (!animate) return;
+    const t = state.clock.elapsedTime;
+    const base = current.current;
+    camera.position.set(base.position[0] + Math.sin(t * 0.11) * 2.2, base.position[1] + Math.sin(t * 0.17) * 0.8, base.position[2]);
+    camera.lookAt(lookTarget.set(...base.target));
+  });
+
+  return null;
+}
