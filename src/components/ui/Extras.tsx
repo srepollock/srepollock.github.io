@@ -96,6 +96,7 @@ export function Extras() {
 
   useEffect(() => {
     document.documentElement.dataset.flying = flying ? "true" : "false";
+    if (flying && document.activeElement instanceof HTMLElement) document.activeElement.blur();
     if (!flying) resetFlyKeys();
   }, [flying]);
 

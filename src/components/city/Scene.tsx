@@ -66,6 +66,7 @@ function Sky({ palette }: { palette: ScenePalette }) {
       uHorizon: { value: new THREE.Color() },
       uSun: { value: new THREE.Color() },
       uSunDir: { value: SUN_DIR },
+      uBelow: { value: new THREE.Color() },
     }),
     [],
   );
@@ -74,6 +75,7 @@ function Sky({ palette }: { palette: ScenePalette }) {
     setColor(uniforms, "uMid", palette.skyMid);
     setColor(uniforms, "uHorizon", palette.skyHorizon);
     setColor(uniforms, "uSun", palette.sunGlow);
+    setColor(uniforms, "uBelow", palette.fog);
   }, [palette, uniforms]);
 
   return (
@@ -93,8 +95,8 @@ function Sky({ palette }: { palette: ScenePalette }) {
 function ridgeGeometry(z: number, base: number, amplitude: number, seed: number): THREE.BufferGeometry {
   const rng = mulberry32(seed);
   const phases = Array.from({ length: 4 }, () => rng() * Math.PI * 2);
-  const segments = 160;
-  const width = 1500;
+  const segments = 420;
+  const width = 4200;
   const positions: number[] = [];
   const indices: number[] = [];
   for (let i = 0; i <= segments; i++) {
@@ -145,6 +147,7 @@ function Ground({ palette }: { palette: ScenePalette }) {
       uStreet: { value: new THREE.Color() },
       uBlock: { value: BLOCK },
       uOrigin: { value: new THREE.Vector2(CITY_BOUNDS.minX, CITY_BOUNDS.minZ) },
+      uExtent: { value: new THREE.Vector2(CITY_BOUNDS.maxX - CITY_BOUNDS.minX, CITY_BOUNDS.maxZ - CITY_BOUNDS.minZ) },
       uStreetWidth: { value: STREET },
       uLit: { value: 1 },
     }),
@@ -158,10 +161,10 @@ function Ground({ palette }: { palette: ScenePalette }) {
     if (uniforms.uLit) uniforms.uLit.value = palette.windowsLit;
   }, [palette, uniforms]);
 
-  const depth = 200 - WATERLINE_Z;
+  const depth = 1400 - WATERLINE_Z;
   return (
     <mesh rotation-x={-Math.PI / 2} position={[0, 0, WATERLINE_Z + depth / 2]}>
-      <planeGeometry args={[900, depth]} />
+      <planeGeometry args={[3200, depth]} />
       <shaderMaterial vertexShader={groundVertex} fragmentShader={groundFragment} uniforms={uniforms} />
     </mesh>
   );
@@ -191,7 +194,7 @@ function Water({ palette, animate }: { palette: ScenePalette; animate: boolean }
   const depth = 400;
   return (
     <mesh rotation-x={-Math.PI / 2} position={[0, -0.4, WATERLINE_Z - depth / 2]}>
-      <planeGeometry args={[1600, depth]} />
+      <planeGeometry args={[3200, depth]} />
       <shaderMaterial vertexShader={groundVertex} fragmentShader={waterFragment} uniforms={uniforms} />
     </mesh>
   );

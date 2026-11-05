@@ -286,6 +286,14 @@ html[data-flying="true"] .city-layer {
   pointer-events: auto;
 }
 
+html[data-flying="true"] .site-shell {
+  pointer-events: none;
+}
+
+html[data-flying="true"] .site-shell header {
+  pointer-events: auto;
+}
+
 #main,
 footer,
 .city-scrim {

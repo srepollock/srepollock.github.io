@@ -29,13 +29,18 @@ export const skyFragment = /* glsl */ `
   uniform vec3 uHorizon;
   uniform vec3 uSun;
   uniform vec3 uSunDir;
+  uniform vec3 uBelow;
   varying vec3 vDir;
   void main() {
     float h = clamp(vDir.y, -0.2, 1.0);
-    vec3 col = mix(uHorizon, uMid, smoothstep(0.0, 0.18, h));
+    vec2 toSun = normalize(uSunDir.xz);
+    float towardSun = pow(max(dot(normalize(vDir.xz + 1e-5), toSun) * 0.5 + 0.5, 0.0), 3.0);
+    vec3 horizon = mix(mix(uMid, uBelow, 0.35), uHorizon, towardSun);
+    vec3 col = mix(horizon, uMid, smoothstep(0.0, 0.18, h));
     col = mix(col, uTop, smoothstep(0.16, 0.65, h));
     float sun = pow(max(dot(normalize(vDir), normalize(uSunDir)), 0.0), 18.0);
     col += uSun * sun * 0.55;
+    col = mix(col, uBelow, smoothstep(0.0, -0.06, vDir.y));
     gl_FragColor = vec4(col, 1.0);
   }
 `;
@@ -123,13 +128,17 @@ export const groundFragment = /* glsl */ `
   uniform float uBlock;
   uniform float uStreetWidth;
   uniform vec2 uOrigin;
+  uniform vec2 uExtent;
   uniform float uLit;
   varying vec3 vWorld;
   varying float vDist;
   ${fogChunk}
   void main() {
     vec2 g = mod(vWorld.xz - uOrigin + uStreetWidth * 0.5, uBlock);
-    float street = 1.0 - step(uStreetWidth, min(g.x, g.y));
+    vec2 local = vWorld.xz - uOrigin;
+    float inside = step(-uStreetWidth, local.x) * step(local.x, uExtent.x + uStreetWidth)
+      * step(-uStreetWidth, local.y) * step(local.y, uExtent.y + uStreetWidth);
+    float street = (1.0 - step(uStreetWidth, min(g.x, g.y))) * inside;
     float centre = street * (1.0 - smoothstep(0.0, 0.18, abs(min(g.x, g.y) - uStreetWidth * 0.5)));
     vec3 col = uGround;
     col = mix(col, uGround * 1.6 + uStreet * 0.05, street);

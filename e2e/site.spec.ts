@@ -188,6 +188,8 @@ test.describe("free-fly", () => {
     await expect(page.locator("html")).toHaveAttribute("data-flying", "true");
     await expect(page.getByTestId("fly-hint")).toBeVisible();
     await expect(page.locator("#main")).toBeHidden();
+    const underPointer = await page.evaluate(() => document.elementFromPoint(window.innerWidth / 2, window.innerHeight * 0.6)?.tagName);
+    expect(underPointer).toBe("CANVAS");
     await page.keyboard.press("Escape");
     await expect(page.locator("html")).toHaveAttribute("data-flying", "false");
     await expect(page.locator("#main")).toBeVisible();
