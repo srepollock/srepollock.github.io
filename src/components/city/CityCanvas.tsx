@@ -1,8 +1,10 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { DistrictId } from "@/lib/districts";
+import { districts, type DistrictId } from "@/lib/districts";
+import { emitCityEvent, freeFly, showToast } from "@/lib/extras";
 import { setCityStatus } from "@/lib/cityStatus";
 import { useFlightStatus } from "@/lib/flightStatus";
 import type { QualityProfile } from "@/lib/quality";
@@ -31,6 +33,8 @@ export default function CityCanvas({ district, theme, rain, quality, reducedMoti
   const [invalidate, setInvalidate] = useState<(() => void) | null>(null);
   const capped = !reducedMotion && quality.fpsCap !== null;
   const flight = useFlightStatus();
+  const flying = freeFly.use();
+  const router = useRouter();
 
   useEffect(() => {
     if (ready) return;
@@ -45,7 +49,7 @@ export default function CityCanvas({ district, theme, rain, quality, reducedMoti
     <div className="city-canvas absolute inset-0" data-ready={ready}>
       <Canvas
         dpr={quality.dpr}
-        frameloop={reducedMotion || capped ? "demand" : "always"}
+        frameloop={(reducedMotion && !flying) || capped ? "demand" : "always"}
         gl={{ antialias: quality.tier === "high", powerPreference: "high-performance", alpha: false }}
         camera={{ fov: 50, near: 0.5, far: 2000, position: [0, 55, 150] }}
         onCreated={(state) => {
@@ -71,6 +75,15 @@ export default function CityCanvas({ district, theme, rain, quality, reducedMoti
           trafficCars={quality.trafficCars}
           deployTarget={flight.state === "flying" ? flight.district : null}
           animate={!reducedMotion}
+          flying={flying}
+          onLandmark={(target) => {
+            freeFly.set(false);
+            router.push(districts[target].href);
+          }}
+          onRidge={() => {
+            emitCityEvent("shred");
+            showToast("🏂 Fresh tracks on the North Shore.");
+          }}
         />
       </Canvas>
       {capped && invalidate && <FrameCap fps={quality.fpsCap ?? 30} invalidate={invalidate} />}

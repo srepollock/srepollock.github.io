@@ -82,7 +82,7 @@ describe("runCommand", () => {
   });
 
   it("has a sense of humour about sudo", () => {
-    expect(runCommand("sudo make me a sandwich", context).lines[0]?.text).toMatch(/sudoers/);
+    expect(runCommand("sudo reboot", context).lines[0]?.text).toMatch(/sudoers/);
   });
 });
 
@@ -108,5 +108,26 @@ describe("commonPrefix", () => {
     expect(commonPrefix(["cd", "cat", "city"])).toBe("c");
     expect(commonPrefix(["contact"])).toBe("contact");
     expect(commonPrefix([])).toBe("");
+  });
+});
+
+describe("easter eggs and fly", () => {
+  it("fly toggles free-fly and closes the shell", () => {
+    expect(runCommand("fly", context).effects).toEqual([{ type: "fly" }, { type: "close" }]);
+  });
+
+  it("knows the sandwich rules", () => {
+    expect(runCommand("make me a sandwich", context).lines[0]?.text).toBe("What? Make it yourself.");
+    expect(runCommand("sudo make me a sandwich", context).lines[0]?.text).toBe("Okay. 🥪");
+    expect(runCommand("sudo rm -rf", context).lines[0]?.text).toMatch(/sudoers/);
+  });
+
+  it("shred heads home first when needed", () => {
+    expect(runCommand("shred", context).effects).toEqual([{ type: "shred" }, { type: "close" }]);
+    expect(runCommand("shred", { ...context, district: "work" }).effects[0]).toEqual({ type: "navigate", href: "/" });
+  });
+
+  it("git blame has opinions", () => {
+    expect(runCommand("git blame", context).lines[0]?.text).toContain("Spencer Pollock");
   });
 });

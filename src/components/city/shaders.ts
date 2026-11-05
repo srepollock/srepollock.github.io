@@ -156,25 +156,4 @@ export const waterFragment = /* glsl */ `
   }
 `;
 
-export const rainVertex = /* glsl */ `
-  attribute vec3 aOrigin;
-  attribute float aEnd;
-  uniform float uTime;
-  uniform vec3 uCenter;
-  varying float vAlpha;
-  void main() {
-    float fall = mod(aOrigin.y - uTime * 38.0, 70.0);
-    vec3 p = vec3(aOrigin.x + uCenter.x, fall + aEnd * 1.6, aOrigin.z + uCenter.z);
-    p.x += aEnd * 0.25;
-    vAlpha = aEnd;
-    gl_Position = projectionMatrix * viewMatrix * vec4(p, 1.0);
-  }
-`;
 
-export const rainFragment = /* glsl */ `
-  uniform vec3 uColor;
-  varying float vAlpha;
-  void main() {
-    gl_FragColor = vec4(uColor, 0.08 + vAlpha * 0.32);
-  }
-`;

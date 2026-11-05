@@ -6,6 +6,7 @@ import { districtForPath } from "@/lib/districts";
 import { setCityStatus } from "@/lib/cityStatus";
 import { updateSettings, useSettings } from "@/lib/settings";
 import { commonPrefix, complete, runCommand, type Effect, type Line } from "@/lib/terminal";
+import { emitCityEvent, freeFly, showToast } from "@/lib/extras";
 import { closeTerminal } from "@/lib/terminalStore";
 
 type Entry = { id: number; input?: string; lines: Line[] };
@@ -69,6 +70,15 @@ export default function Terminal() {
             break;
           case "close":
             closeTerminal();
+            break;
+          case "fly":
+            freeFly.set(!freeFly.get());
+            break;
+          case "shred":
+            window.setTimeout(() => {
+              emitCityEvent("shred");
+              showToast("🏂 Fresh tracks on the North Shore. Watch the ridge.");
+            }, 600);
             break;
         }
       }

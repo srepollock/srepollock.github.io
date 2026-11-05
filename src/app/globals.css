@@ -274,3 +274,59 @@ body {
     animation: none;
   }
 }
+
+html[data-flying="true"] #main,
+html[data-flying="true"] footer,
+html[data-flying="true"] .city-scrim {
+  opacity: 0;
+  visibility: hidden;
+}
+
+html[data-flying="true"] .city-layer {
+  pointer-events: auto;
+}
+
+#main,
+footer,
+.city-scrim {
+  transition: opacity 400ms ease-out, visibility 400ms;
+}
+
+.lacrosse-ball {
+  position: fixed;
+  left: -40px;
+  bottom: 30vh;
+  z-index: 50;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff, #f4f1e6 55%, #c9c4b4);
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.35);
+  pointer-events: none;
+  animation:
+    lacrosse-x 2.4s linear forwards,
+    lacrosse-y 0.6s cubic-bezier(0.3, 0, 0.7, 1) 4 alternate;
+}
+
+@keyframes lacrosse-x {
+  to {
+    left: calc(100vw + 40px);
+  }
+}
+
+@keyframes lacrosse-y {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-38vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #main,
+  footer,
+  .city-scrim {
+    transition: none;
+  }
+}

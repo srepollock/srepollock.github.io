@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { CityBackdrop } from "@/components/city/CityBackdrop";
 import { SkylineFallback } from "@/components/city/SkylineFallback";
 import { CityNotice } from "@/components/ui/CityNotice";
+import { Extras } from "@/components/ui/Extras";
 import { Hud } from "@/components/ui/Hud";
 import { RainOverlay } from "@/components/ui/RainOverlay";
 import { SiteFooter } from "@/components/ui/SiteFooter";
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </div>
         <Hud />
         <CityNotice />
+        <Extras />
         <TerminalHost />
       </body>
     </html>

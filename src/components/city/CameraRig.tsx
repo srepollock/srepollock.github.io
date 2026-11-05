@@ -16,16 +16,41 @@ function framingOffset(district: DistrictId, width: number): number {
   return -7;
 }
 
-export function CameraRig({ district, animate }: { district: DistrictId; animate: boolean }) {
+export function CameraRig({ district, animate, paused }: { district: DistrictId; animate: boolean; paused: boolean }) {
   const camera = useThree((state) => state.camera) as THREE.PerspectiveCamera;
   const size = useThree((state) => state.size);
   const invalidate = useThree((state) => state.invalidate);
   const current = useRef<Pose>(districts[district].camera);
   const flight = useRef<Flight | null>(null);
   const first = useRef(true);
+  const wasPaused = useRef(paused);
 
   useLayoutEffect(() => {
+    if (paused) {
+      wasPaused.current = true;
+      flight.current = null;
+      camera.filmOffset = 0;
+      camera.updateProjectionMatrix();
+      return;
+    }
     const destination = districts[district].camera;
+    if (wasPaused.current) {
+      wasPaused.current = false;
+      const ahead = new THREE.Vector3(0, 0, -60).applyQuaternion(camera.quaternion).add(camera.position);
+      const from: Pose = { position: [camera.position.x, camera.position.y, camera.position.z], target: [ahead.x, ahead.y, ahead.z] };
+      current.current = from;
+      if (!animate) {
+        current.current = destination;
+        camera.position.set(...destination.position);
+        camera.lookAt(lookTarget.set(...destination.target));
+        invalidate();
+        return;
+      }
+      flight.current = { from, to: destination, elapsed: 0, duration: flightDuration(from.position, destination.position) };
+      setFlightStatus({ state: "flying", district });
+      invalidate();
+      return;
+    }
     if (first.current || !animate) {
       first.current = false;
       flight.current = null;
@@ -46,11 +71,12 @@ export function CameraRig({ district, animate }: { district: DistrictId; animate
     };
     setFlightStatus({ state: "flying", district });
     invalidate();
-  }, [district, animate, camera, invalidate, size.width]);
+  }, [district, animate, paused, camera, invalidate, size.width]);
 
   useEffect(() => () => setFlightStatus({ state: "idle", district: null }), []);
 
   useFrame((state, delta) => {
+    if (paused) return;
     const active = flight.current;
     const goalOffset = framingOffset(district, size.width);
     if (Math.abs(camera.filmOffset - goalOffset) > 0.01) {

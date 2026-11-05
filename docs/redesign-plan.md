@@ -24,6 +24,6 @@ Decisions agreed before the rebuild (November 2026).
    projects + Developer Box scaffolding.
 2. **⌘K terminal + pipeline traffic**: a command palette styled as a shell (`cd projects`, `whoami`,
    `deploy`, `theme`, `rain on`), and light-trail traffic flowing between districts as a CI/CD metaphor.
-3. **Free-fly + Easter eggs**: take the controls and cruise the city, with clickable landmark
-   buildings. Easter eggs might include a lacrosse whistle on the Konami code and a snowboard run
-   on the ridge.
+3. **Free-fly + Easter eggs**: WASD/arrow-key free-fly with clickable landmark beacons; a
+   lacrosse whistle on the Konami code, a snowboard run down the North Shore ridge, `sudo make me
+   a sandwich`, and a leaning "git blame" tower in the park.

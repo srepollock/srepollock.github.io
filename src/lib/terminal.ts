@@ -11,7 +11,9 @@ export type Effect =
   | { type: "external"; href: string }
   | { type: "settings"; patch: Partial<Settings> }
   | { type: "clear" }
-  | { type: "close" };
+  | { type: "close" }
+  | { type: "fly" }
+  | { type: "shred" };
 
 export type CommandResult = { lines: Line[]; effects: Effect[] };
 
@@ -197,6 +199,12 @@ const commands: Command[] = [
   toggleCommand("rain", "rain"),
   toggleCommand("city", "city"),
   {
+    name: "fly",
+    usage: "fly",
+    summary: "Take the controls (or press F)",
+    run: () => result([muted("free-fly engaged — Esc to land")], [{ type: "fly" }, { type: "close" }]),
+  },
+  {
     name: "clear",
     usage: "clear",
     summary: "Clear the screen",
@@ -210,7 +218,19 @@ const commands: Command[] = [
   },
 ];
 
-const hidden: Readonly<Record<string, () => CommandResult>> = {
+const hidden: Readonly<Record<string, (context: TerminalContext) => CommandResult>> = {
+  "make me a sandwich": () => result([err("What? Make it yourself.")]),
+  "sudo make me a sandwich": () => result([ok("Okay. 🥪")]),
+  "git blame": () =>
+    result([
+      out("^b10cked (Spencer Pollock 2026-11-05 02:13) the entire city"),
+      muted("hint: one building in the park has more to say"),
+    ]),
+  shred: ({ district }) =>
+    result(
+      [ok("🏂 dropping in on the North Shore…")],
+      [...(district === "skyline" ? [] : [{ type: "navigate" as const, href: "/" }]), { type: "shred" }, { type: "close" }],
+    ),
   sudo: () => result([err("spencer is not in the sudoers file. This incident will be reported.")]),
   "rm -rf /": () => result([err("nice try. the city has backups.")]),
   pwd: () => result([out("/home/spencer")]),
@@ -225,7 +245,7 @@ export function runCommand(input: string, context: TerminalContext): CommandResu
   const trimmed = input.trim();
   if (trimmed === "") return result([]);
   const easter = hidden[trimmed] ?? hidden[tokenize(trimmed)[0] ?? ""];
-  if (easter) return easter();
+  if (easter) return easter(context);
   const [name, ...args] = tokenize(trimmed);
   const command = commands.find((c) => c.name === name);
   if (!command) return result([err(`command not found: ${name ?? ""}`), muted("try `help`")]);

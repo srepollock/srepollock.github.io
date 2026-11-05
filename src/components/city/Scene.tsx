@@ -1,21 +1,23 @@
 "use client";
 
-import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useFrame, type ThreeEvent } from "@react-three/fiber";
+import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { DistrictId } from "@/lib/districts";
 import { mulberry32 } from "@/lib/random";
 import { CameraRig } from "./CameraRig";
+
+const FreeFly = lazy(() => import("./FreeFly"));
+const Extras3D = lazy(() => import("./Extras3D"));
+const Rain = lazy(() => import("./Rain3D"));
+const Traffic = lazy(() => import("./Traffic3D"));
 import { BLOCK, CITY_BOUNDS, STREET, WATERLINE_Z, generateCity, type CityLayout } from "./generate";
-import { buildRoutes, headsTo, pointAt, spawnCars } from "./traffic";
 import type { ScenePalette } from "./palette";
 import {
   buildingFragment,
   buildingVertex,
   groundFragment,
   groundVertex,
-  rainFragment,
-  rainVertex,
   skyFragment,
   skyVertex,
   waterFragment,
@@ -33,6 +35,9 @@ type SceneProps = {
   trafficCars: number;
   deployTarget: DistrictId | null;
   animate: boolean;
+  flying: boolean;
+  onLandmark: (district: DistrictId) => void;
+  onRidge: () => void;
 };
 
 type Uniforms = Record<string, THREE.IUniform>;
@@ -113,7 +118,7 @@ function ridgeGeometry(z: number, base: number, amplitude: number, seed: number)
   return geometry;
 }
 
-function Mountains({ palette }: { palette: ScenePalette }) {
+function Mountains({ palette, onRidge }: { palette: ScenePalette; onRidge?: (event: ThreeEvent<MouseEvent>) => void }) {
   const near = useMemo(() => ridgeGeometry(-300, 30, 95, 11), []);
   const far = useMemo(() => ridgeGeometry(-430, 60, 140, 29), []);
   useEffect(() => () => {
@@ -125,7 +130,7 @@ function Mountains({ palette }: { palette: ScenePalette }) {
       <mesh geometry={far}>
         <meshBasicMaterial color={palette.ridgeFar} fog={false} side={THREE.DoubleSide} />
       </mesh>
-      <mesh geometry={near}>
+      <mesh geometry={near} onClick={onRidge}>
         <meshBasicMaterial color={palette.ridgeNear} fog={false} side={THREE.DoubleSide} />
       </mesh>
     </group>
@@ -270,7 +275,17 @@ function NeonTrim({ layout, palette }: { layout: CityLayout; palette: ScenePalet
   );
 }
 
-function Landmarks({ layout, palette, animate }: { layout: CityLayout; palette: ScenePalette; animate: boolean }) {
+function Landmarks({
+  layout,
+  palette,
+  animate,
+  onSelect,
+}: {
+  layout: CityLayout;
+  palette: ScenePalette;
+  animate: boolean;
+  onSelect?: (district: DistrictId) => void;
+}) {
   const beacons = useRef<THREE.MeshBasicMaterial>(null);
   useFrame(({ clock }) => {
     if (!beacons.current) return;
@@ -279,7 +294,21 @@ function Landmarks({ layout, palette, animate }: { layout: CityLayout; palette: 
   return (
     <group>
       {layout.landmarks.map((l) => (
-        <group key={l.district} position={[l.x, 0, l.z]}>
+        <group
+          key={l.district}
+          position={[l.x, 0, l.z]}
+          onClick={
+            onSelect
+              ? (event: ThreeEvent<MouseEvent>) => {
+                  if (event.delta > 4) return;
+                  event.stopPropagation();
+                  onSelect(l.district);
+                }
+              : undefined
+          }
+          onPointerOver={onSelect ? () => (document.body.style.cursor = "pointer") : undefined}
+          onPointerOut={onSelect ? () => (document.body.style.cursor = "") : undefined}
+        >
           {l.district === "contact" ? (
             <mesh position={[0, l.height / 2, 0]}>
               <cylinderGeometry args={[l.radius * 0.35, l.radius * 2.2, l.height, 6, 1, true]} />
@@ -305,106 +334,56 @@ function Landmarks({ layout, palette, animate }: { layout: CityLayout; palette: 
   );
 }
 
-function Rain({ palette, drops, animate }: { palette: ScenePalette; drops: number; animate: boolean }) {
-  const camera = useThree((state) => state.camera);
-  const geometry = useMemo(() => {
-    const rng = mulberry32(99);
-    const origins = new Float32Array(drops * 6);
-    const ends = new Float32Array(drops * 2);
-    for (let i = 0; i < drops; i++) {
-      const x = (rng() - 0.5) * 160;
-      const y = rng() * 70;
-      const z = (rng() - 0.5) * 160;
-      origins.set([x, y, z, x, y, z], i * 6);
-      ends.set([0, 1], i * 2);
-    }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(new Float32Array(drops * 6), 3));
-    g.setAttribute("aOrigin", new THREE.BufferAttribute(origins, 3));
-    g.setAttribute("aEnd", new THREE.BufferAttribute(ends, 1));
-    return g;
-  }, [drops]);
-  const uniforms = useMemo<Uniforms>(
-    () => ({ uTime: { value: 0 }, uCenter: { value: new THREE.Vector3() }, uColor: { value: new THREE.Color() } }),
-    [],
-  );
-  useLayoutEffect(() => setColor(uniforms, "uColor", palette.rain), [palette, uniforms]);
-  useEffect(() => () => geometry.dispose(), [geometry]);
-  useFrame((_, delta) => {
-    if (animate && uniforms.uTime) uniforms.uTime.value += delta;
-    (uniforms.uCenter?.value as THREE.Vector3).set(camera.position.x, 0, camera.position.z - 40);
-  });
-  return (
-    <lineSegments geometry={geometry} frustumCulled={false}>
-      <shaderMaterial vertexShader={rainVertex} fragmentShader={rainFragment} uniforms={uniforms} transparent depthWrite={false} />
-    </lineSegments>
-  );
-}
 
-const WHITE = new THREE.Color("#ffffff");
 
-function Traffic({
+export function Scene({
+  district,
   palette,
-  total,
+  density,
+  rain,
+  rainDrops,
+  trafficCars,
   deployTarget,
   animate,
-}: {
-  palette: ScenePalette;
-  total: number;
-  deployTarget: DistrictId | null;
-  animate: boolean;
-}) {
-  const mesh = useRef<THREE.InstancedMesh>(null);
-  const routes = useMemo(() => buildRoutes(), []);
-  const cars = useMemo(() => spawnCars(routes, total, 31), [routes, total]);
-  const travelled = useMemo(() => Float32Array.from(cars, (car) => car.offset), [cars]);
-  const scratch = useMemo(() => ({ matrix: new THREE.Matrix4(), color: new THREE.Color() }), []);
-
-  useFrame((_, delta) => {
-    const target = mesh.current;
-    if (!target) return;
-    const step = animate ? Math.min(delta, 0.1) : 0;
-    cars.forEach((car, i) => {
-      const route = routes[car.route];
-      if (!route) return;
-      const surging = deployTarget !== null && headsTo(route, car.outbound, deployTarget);
-      travelled[i] = (travelled[i] ?? 0) + step * car.speed * (surging ? 3.2 : 1);
-      const pose = pointAt(route, travelled[i] ?? 0, !car.outbound);
-      const x = pose.x + (pose.alongX ? 0 : car.lane);
-      const z = pose.z + (pose.alongX ? car.lane : 0);
-      scratch.matrix.makeScale(pose.alongX ? 4.2 : 0.6, 0.3, pose.alongX ? 0.6 : 4.2).setPosition(x, route.altitude, z);
-      target.setMatrixAt(i, scratch.matrix);
-      scratch.color.set(car.outbound ? palette.neon : palette.window);
-      if (surging) scratch.color.lerp(WHITE, 0.55);
-      target.setColorAt(i, scratch.color);
-    });
-    target.instanceMatrix.needsUpdate = true;
-    if (target.instanceColor) target.instanceColor.needsUpdate = true;
-  });
-
-  return (
-    <instancedMesh ref={mesh} args={[undefined, undefined, cars.length]} frustumCulled={false}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshBasicMaterial toneMapped={false} />
-    </instancedMesh>
-  );
-}
-
-export function Scene({ district, palette, density, rain, rainDrops, trafficCars, deployTarget, animate }: SceneProps) {
+  flying,
+  onLandmark,
+  onRidge,
+}: SceneProps) {
   const layout = useMemo(() => generateCity(CITY_SEED, density), [density]);
   return (
     <>
       <fogExp2 attach="fog" args={[palette.fog, palette.fogDensity]} />
       <Sky palette={palette} />
-      <Mountains palette={palette} />
+      <Mountains
+        palette={palette}
+        onRidge={
+          flying
+            ? (event) => {
+                if (event.delta > 4) return;
+                event.stopPropagation();
+                onRidge();
+              }
+            : undefined
+        }
+      />
       <Water palette={palette} animate={animate} />
       <Ground palette={palette} />
       <Buildings layout={layout} palette={palette} animate={animate} />
       <NeonTrim layout={layout} palette={palette} />
-      <Landmarks layout={layout} palette={palette} animate={animate} />
-      <Traffic palette={palette} total={trafficCars} deployTarget={deployTarget} animate={animate} />
-      {rain && <Rain palette={palette} drops={rainDrops} animate={animate} />}
-      <CameraRig district={district} animate={animate} />
+      <Landmarks layout={layout} palette={palette} animate={animate} onSelect={flying ? onLandmark : undefined} />
+      <Suspense fallback={null}>
+        <Traffic palette={palette} total={trafficCars} deployTarget={deployTarget} animate={animate} />
+      </Suspense>
+      {rain && (
+        <Suspense fallback={null}>
+          <Rain palette={palette} drops={rainDrops} animate={animate} />
+        </Suspense>
+      )}
+      <CameraRig district={district} animate={animate} paused={flying} />
+      <Suspense fallback={null}>
+        <Extras3D palette={palette} interactive={flying} />
+        {flying && <FreeFly layout={layout} />}
+      </Suspense>
     </>
   );
 }

@@ -5,6 +5,8 @@ import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { districtForPath, districts, navOrder } from "@/lib/districts";
 import { setCityStatus } from "@/lib/cityStatus";
+import { freeFly } from "@/lib/extras";
+import { useCanFly } from "./Extras";
 import { updateSettings, useSettings } from "@/lib/settings";
 import { toggleTerminal, useTerminalOpen } from "@/lib/terminalStore";
 
@@ -38,6 +40,8 @@ export function SiteHeader() {
   const active = districtForPath(pathname);
   const settings = useSettings();
   const terminalOpen = useTerminalOpen();
+  const flying = freeFly.use();
+  const canFly = useCanFly();
 
   return (
     <header className="relative z-20">
@@ -91,6 +95,13 @@ export function SiteHeader() {
             <span>shell</span>
             <kbd className="rounded border border-line px-1 text-[10px] text-subtle">⌘K</kbd>
           </button>
+          {canFly && (
+            <Toggle label={flying ? "Land (Esc)" : "Free-fly the city (F)"} pressed={flying} onClick={() => freeFly.set(!flying)}>
+              <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <path d="M2 16l20-8-7 13-3-6-10 1zM12 15l3-4" />
+              </svg>
+            </Toggle>
+          )}
           <span className="sm:hidden">
             <Toggle label="Open the shell" pressed={terminalOpen} onClick={toggleTerminal}>
               <span aria-hidden="true" className="font-mono text-xs">&gt;_</span>

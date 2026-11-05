@@ -1,4 +1,10 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+// Keyboard shortcuts are attached in effects after hydration; `data-flying` is set in
+// the same post-hydration effect flush, so its presence means key listeners are live.
+async function hydrated(page: Page): Promise<void> {
+  await expect(page.locator("html")).toHaveAttribute("data-flying", /true|false/);
+}
 
 const routes = [
   { path: "/", heading: /Platform engineer/ },
@@ -15,6 +21,7 @@ for (const route of routes) {
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
     await page.goto(route.path);
+    await hydrated(page);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(route.heading);
     await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
     expect(errors).toEqual([]);
@@ -23,6 +30,7 @@ for (const route of routes) {
 
 test("client-side navigation updates the active district", async ({ page }) => {
   await page.goto("/");
+  await hydrated(page);
   await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Projects" }).click();
   await expect(page).toHaveURL(/\/projects\/$/);
   await expect(page.getByRole("link", { name: "Projects" })).toHaveAttribute("aria-current", "page");
@@ -30,6 +38,7 @@ test("client-side navigation updates the active district", async ({ page }) => {
 
 test("Developer Box projects link out to developerbox.ca", async ({ page }) => {
   await page.goto("/projects/");
+  await hydrated(page);
   await page.getByRole("button", { name: /Developer Box/ }).click();
   const links = page.locator("a[data-devbox-link]");
   await expect(links.first()).toBeVisible();
@@ -40,6 +49,7 @@ test("Developer Box projects link out to developerbox.ca", async ({ page }) => {
 
 test("project filters narrow the grid", async ({ page }) => {
   await page.goto("/projects/");
+  await hydrated(page);
   const cards = page.locator("main ul[aria-live] > li");
   const all = await cards.count();
   await page.getByRole("button", { name: /Open source/ }).click();
@@ -50,6 +60,7 @@ test("project filters narrow the grid", async ({ page }) => {
 
 test("city toggle persists and removes the canvas", async ({ page }) => {
   await page.goto("/");
+  await hydrated(page);
   await expect(page.getByTestId("city-canvas")).toBeAttached();
   await expect(page.getByTestId("city-notice")).toHaveCount(0);
   await page.getByRole("button", { name: "Turn the city off" }).click();
@@ -63,6 +74,7 @@ test("city toggle persists and removes the canvas", async ({ page }) => {
 test("theme toggle switches data-theme and persists", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("/");
+  await hydrated(page);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page.getByRole("button", { name: "Switch to day" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
@@ -83,6 +95,7 @@ test.describe("without WebGL", () => {
 
   test("explains the static skyline, rains in CSS, and stays usable", async ({ page }) => {
     await page.goto("/");
+    await hydrated(page);
     await expect(page.getByTestId("skyline-fallback")).toBeVisible();
     await expect(page.getByTestId("city-canvas")).toHaveCount(0);
     await expect(page.getByTestId("city-notice")).toContainText("isn't providing WebGL");
@@ -110,6 +123,7 @@ test("reduced motion still renders the city and navigates without errors", async
   page.on("pageerror", (error) => errors.push(error.message));
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
+  await hydrated(page);
   await expect(page.getByTestId("city-canvas")).toBeAttached();
   await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "About" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hi, I'm Spencer.");
@@ -119,6 +133,7 @@ test("reduced motion still renders the city and navigates without errors", async
 test.describe("terminal", () => {
   test("opens with Ctrl+K, navigates with cd and closes", async ({ page }) => {
     await page.goto("/");
+    await hydrated(page);
     await page.keyboard.press("Control+k");
     const terminal = page.getByTestId("terminal");
     await expect(terminal).toBeVisible();
@@ -132,6 +147,7 @@ test.describe("terminal", () => {
 
   test("runs commands, completes with Tab and recalls history", async ({ page }) => {
     await page.goto("/about/");
+    await hydrated(page);
     await page.getByRole("button", { name: /Open the shell/ }).first().click();
     const terminal = page.getByTestId("terminal");
     const input = terminal.getByRole("textbox", { name: /command/ });
@@ -152,11 +168,93 @@ test.describe("terminal", () => {
 
   test("Escape closes it and returns focus", async ({ page }) => {
     await page.goto("/");
+    await hydrated(page);
     const opener = page.getByRole("button", { name: /Open the shell/ }).first();
     await opener.click();
     await expect(page.getByTestId("terminal")).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.getByTestId("terminal")).toHaveCount(0);
     await expect(opener).toBeFocused();
+  });
+});
+
+test.describe("free-fly", () => {
+  test("F takes the controls, hides the content, and Esc lands", async ({ page }) => {
+    await page.goto("/");
+    await hydrated(page);
+    const flyButton = page.getByRole("button", { name: /Free-fly the city/ });
+    await expect(flyButton).toBeVisible();
+    await page.locator("body").press("f");
+    await expect(page.locator("html")).toHaveAttribute("data-flying", "true");
+    await expect(page.getByTestId("fly-hint")).toBeVisible();
+    await expect(page.locator("#main")).toBeHidden();
+    await page.keyboard.press("Escape");
+    await expect(page.locator("html")).toHaveAttribute("data-flying", "false");
+    await expect(page.locator("#main")).toBeVisible();
+  });
+
+  test("the shell can start a flight and the header button lands it", async ({ page }) => {
+    await page.goto("/about/");
+    await hydrated(page);
+    await expect(page.getByRole("button", { name: /Free-fly the city/ })).toBeVisible();
+    await page.keyboard.press("Control+k");
+    const input = page.getByTestId("terminal").getByRole("textbox", { name: /command/ });
+    await input.fill("fly");
+    await input.press("Enter");
+    await expect(page.locator("html")).toHaveAttribute("data-flying", "true");
+    await page.getByRole("button", { name: /Land/ }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-flying", "false");
+  });
+
+  test("is unavailable without WebGL", async ({ page }) => {
+    await page.addInitScript(() => {
+      const original = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, type: string, ...rest: unknown[]) {
+        if (type.startsWith("webgl")) return null;
+        return (original as (...args: unknown[]) => unknown).call(this, type, ...rest);
+      } as typeof HTMLCanvasElement.prototype.getContext;
+    });
+    await page.goto("/");
+    await hydrated(page);
+    await expect(page.getByTestId("city-notice")).toBeVisible();
+    await expect(page.getByRole("button", { name: /Free-fly the city/ })).toHaveCount(0);
+    await page.locator("body").press("f");
+    await expect(page.locator("html")).not.toHaveAttribute("data-flying", "true");
+  });
+});
+
+test.describe("easter eggs", () => {
+  test("the Konami code blows the whistle", async ({ page }) => {
+    await page.goto("/", { waitUntil: "commit" });
+    await hydrated(page);
+    for (const key of ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"]) {
+      await page.keyboard.press(key);
+    }
+    await expect(page.getByTestId("toast")).toContainText("🥍");
+  });
+
+  test("the shell makes sandwiches, eventually", async ({ page }) => {
+    await page.goto("/");
+    await hydrated(page);
+    await page.keyboard.press("Control+k");
+    const terminal = page.getByTestId("terminal");
+    const input = terminal.getByRole("textbox", { name: /command/ });
+    await input.fill("make me a sandwich");
+    await input.press("Enter");
+    await expect(terminal).toContainText("Make it yourself.");
+    await input.fill("sudo make me a sandwich");
+    await input.press("Enter");
+    await expect(terminal).toContainText("Okay. 🥪");
+  });
+
+  test("shred sends a snowboarder down the ridge", async ({ page }) => {
+    await page.goto("/work/");
+    await hydrated(page);
+    await page.keyboard.press("Control+k");
+    const input = page.getByTestId("terminal").getByRole("textbox", { name: /command/ });
+    await input.fill("shred");
+    await input.press("Enter");
+    await expect(page).toHaveURL(/\/$/);
+    await expect(page.getByTestId("toast")).toContainText("Fresh tracks");
   });
 });
