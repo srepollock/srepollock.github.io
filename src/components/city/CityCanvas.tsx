@@ -3,6 +3,7 @@
 import { Canvas } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 import type { DistrictId } from "@/lib/districts";
+import { useFlightStatus } from "@/lib/flightStatus";
 import type { QualityProfile } from "@/lib/quality";
 import type { Theme } from "@/lib/settings";
 import { palettes } from "./palette";
@@ -28,6 +29,7 @@ export default function CityCanvas({ district, theme, rain, quality, reducedMoti
   const [ready, setReady] = useState(false);
   const [invalidate, setInvalidate] = useState<(() => void) | null>(null);
   const capped = !reducedMotion && quality.fpsCap !== null;
+  const flight = useFlightStatus();
 
   return (
     <div className="city-canvas absolute inset-0" data-ready={ready}>
@@ -49,6 +51,8 @@ export default function CityCanvas({ district, theme, rain, quality, reducedMoti
           density={quality.density}
           rain={rain}
           rainDrops={quality.rainDrops}
+          trafficCars={quality.trafficCars}
+          deployTarget={flight.state === "flying" ? flight.district : null}
           animate={!reducedMotion}
         />
       </Canvas>

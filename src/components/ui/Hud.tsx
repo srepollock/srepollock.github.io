@@ -18,7 +18,7 @@ export function Hud() {
       aria-hidden="true"
     >
       <span className={flying ? "text-amber" : "text-accent"}>●</span>{" "}
-      {flying ? `deploying → ${district.id}` : `${district.id} · healthy`} · 49.32°N 123.07°W ·{" "}
+      {flying ? `build ✓ · test ✓ · deploy → ${district.id}` : `${district.id} · healthy`} · 49.32°N 123.07°W ·{" "}
       {settings.theme === "dark" ? "dusk" : "overcast"}
       {settings.rain ? " · 100% chance of rain" : ""}
     </div>

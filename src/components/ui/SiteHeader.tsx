@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { districtForPath, districts, navOrder } from "@/lib/districts";
 import { updateSettings, useSettings } from "@/lib/settings";
+import { toggleTerminal, useTerminalOpen } from "@/lib/terminalStore";
 
 function Toggle({
   label,
@@ -35,6 +36,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const active = districtForPath(pathname);
   const settings = useSettings();
+  const terminalOpen = useTerminalOpen();
 
   return (
     <header className="relative z-20">
@@ -75,6 +77,24 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleTerminal}
+            aria-pressed={terminalOpen}
+            aria-keyshortcuts="Control+K Meta+K"
+            title="Open the shell (⌘K / Ctrl+K)"
+            aria-label="Open the shell (⌘K / Ctrl+K)"
+            className="hidden h-9 items-center gap-2 rounded-full border border-line px-3 font-mono text-xs text-muted transition hover:border-accent hover:text-accent aria-pressed:border-accent aria-pressed:text-accent sm:flex"
+          >
+            <span aria-hidden="true">&gt;_</span>
+            <span>shell</span>
+            <kbd className="rounded border border-line px-1 text-[10px] text-subtle">⌘K</kbd>
+          </button>
+          <span className="sm:hidden">
+            <Toggle label="Open the shell" pressed={terminalOpen} onClick={toggleTerminal}>
+              <span aria-hidden="true" className="font-mono text-xs">&gt;_</span>
+            </Toggle>
+          </span>
           <Toggle
             label={settings.theme === "dark" ? "Switch to day" : "Switch to dusk"}
             pressed={settings.theme === "light"}

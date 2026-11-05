@@ -23,7 +23,8 @@ yarn test:e2e     # Playwright against ./out (run `yarn build` first)
 | `content/work/*.mdx` | Case-study bodies |
 | `src/lib/districts.ts` | Route → district mapping and camera poses |
 | `src/lib/devbox.ts` | Developer Box project links (`https://developerbox.ca/projects/<slug>/`) |
-| `src/components/city/` | The 3D scene: generation, shaders, camera flights, fallback skyline |
+| `src/components/city/` | The 3D scene: generation, shaders, camera flights, traffic lanes, fallback skyline |
+| `src/lib/terminal.ts` | ⌘K shell commands (pure; the UI in `src/components/ui/Terminal.tsx` applies their effects) |
 
 ## Adding a project
 
@@ -33,6 +34,12 @@ Add an entry to `src/data/projects.ts`:
   `repoUrl` only for public repos.
 - `kind: "devbox"` links out to `developerbox.ca/projects/<slug>/`. Leave `devboxPageLive: false`
   until that page exists; the card shows a "coming soon" note.
+
+## Shell
+
+Press ⌘K / Ctrl+K, or the `>_ shell` button. Run `help` for the command list. Commands are pure
+functions that return output lines plus effects (navigate, change settings, clear, close), so they're
+unit-tested without a browser. The shell's code loads on first open.
 
 ## Degradation
 
